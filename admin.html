@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I MART - Admin Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="header">
+    <h2>🛠️ I MART Admin Dashboard</h2>
+
+    <div class="header-icons">
+        <a href="index.html">Home</a>
+    </div>
+</header>
+<script src="js/auth.js"></script>
+<script>
+    protectAdmin();
+</script>
+
+<!-- ================= DASHBOARD ================= -->
+<section class="admin-section">
+
+    <div class="admin-form">
+
+        <h3>Add New Product</h3>
+
+        <input type="text" id="name" placeholder="Product Name">
+        <input type="text" id="category" placeholder="Category">
+        <input type="text" id="brand" placeholder="Brand">
+        <input type="number" id="price" placeholder="Price">
+        <input type="text" id="image" placeholder="Image URL">
+
+        <button onclick="addProduct()">Add Product</button>
+
+    </div>
+
+    <div class="admin-products">
+
+        <h3>Product List</h3>
+
+        <div id="admin-product-list"></div>
+
+    </div>
+
+</section>
+
+<script src="js/products-data.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

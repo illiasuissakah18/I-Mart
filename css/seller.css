@@ -1,0 +1,31 @@
+.upload-label{
+
+display:block;
+
+margin-bottom:8px;
+
+font-weight:bold;
+
+}
+
+.image-preview{
+
+margin:15px 0;
+
+text-align:center;
+
+}
+
+.image-preview img{
+
+width:180px;
+
+height:180px;
+
+object-fit:cover;
+
+border-radius:10px;
+
+border:2px solid #ddd;
+
+}

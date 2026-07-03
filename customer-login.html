@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Login | I MART</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+
+        <a href="index.html">
+
+            <img src="images/logo.png" alt="I MART Logo">
+
+        </a>
+
+    </div>
+
+    <nav>
+
+        <a href="index.html">Home</a>
+
+        <a href="products.html">Products</a>
+
+        <a href="customer-register.html">Register</a>
+
+    </nav>
+
+</header>
+
+<section class="auth-section">
+
+    <div class="auth-card">
+
+        <h1>Customer Login</h1>
+
+        <p>
+            Sign in to your I MART account.
+        </p>
+
+        <form id="customerLoginForm">
+
+            <div class="form-group">
+
+                <label>Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+            <button type="submit" class="btn">
+
+                Login
+
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+
+            Don't have an account?
+
+            <a href="customer-register.html">
+
+                Create One
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script src="js/customer-auth.js"></script>
+
+</body>
+
+</html>

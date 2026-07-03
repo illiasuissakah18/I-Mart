@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Seller Registration | I MART</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/seller-register.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+
+        <a href="index.html">
+
+            <img src="images/logo.png" alt="I MART Logo">
+
+        </a>
+
+    </div>
+
+</header>
+
+<section class="register-section">
+
+    <div class="register-box">
+
+        <h1>Create Seller Account</h1>
+
+        <form id="sellerRegisterForm">
+
+            <input
+                type="text"
+                id="fullName"
+                placeholder="Full Name"
+                required>
+
+            <input
+                type="text"
+                id="shopName"
+                placeholder="Shop Name"
+                required>
+
+            <input
+                type="email"
+                id="sellerEmail"
+                placeholder="Email Address"
+                required>
+
+            <input
+                type="text"
+                id="sellerPhone"
+                placeholder="Phone Number"
+                required>
+
+            <input
+                type="password"
+                id="sellerPassword"
+                placeholder="Password"
+                required>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm Password"
+                required>
+
+            <button type="submit">
+
+                Register
+
+            </button>
+
+        </form>
+
+        <p>
+
+            Already have an account?
+
+            <a href="seller-login.html">
+
+                Login
+
+            </a>
+
+        </p>
+
+    </div>
+
+</section>
+
+<script src="js/seller-auth.js"></script>
+
+</body>
+
+</html>

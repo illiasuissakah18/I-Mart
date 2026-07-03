@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Product | I MART</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/add-product.css">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="logo">
+
+            <a href="index.html">
+
+                <img src="images/logo.png" alt="I MART Logo">
+
+            </a>
+
+        </div>
+
+        <nav>
+
+            <a href="seller-dashboard.html">Dashboard</a>
+
+            <a href="seller-products.html">My Products</a>
+
+            <a href="products.html">Marketplace</a>
+
+        </nav>
+
+    </header>
+
+    <!-- ADD PRODUCT -->
+
+    <section class="add-product-section">
+
+        <div class="form-container">
+
+            <h1>Add New Product</h1>
+
+            <p>
+                Fill in the details below to add a new product to your I MART store.
+            </p>
+
+            <form id="productForm">
+
+                <div class="form-group">
+
+                    <label>Product Name</label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter product name"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Description</label>
+
+                    <textarea
+                        id="description"
+                        rows="5"
+                        placeholder="Enter product description"
+                        required></textarea>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Category</label>
+
+                    <input
+                        type="text"
+                        id="category"
+                        placeholder="Example: Shoes"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Price (GH₵)</label>
+
+                    <input
+                        type="number"
+                        id="price"
+                        placeholder="0.00"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Stock Quantity</label>
+
+                    <input
+                        type="number"
+                        id="stock"
+                        placeholder="0"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+    <label for="image">Upload Product Image</label>
+
+    <input
+        type="file"
+        id="image"
+        name="image"
+        accept=".jpg,.jpeg,.png,.webp"
+        required>
+
+    <small>
+        Supported formats: JPG, JPEG, PNG, WEBP (Maximum 5 MB)
+    </small>
+
+</div>
+
+                <button type="submit" class="btn">
+
+                    ➕ Add Product
+
+                </button>
+
+<div id="message"></div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 I MART Marketplace. All Rights Reserved.
+        </p>
+
+    </footer>
+
+    <script src="js/seller-auth.js"></script>
+<script src="js/add-product.js"></script>
+
+<script>
+    protectSellerDashboard();
+</script>
+
+</body>
+
+</html>

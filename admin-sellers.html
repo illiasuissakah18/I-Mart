@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>I MART Admin - Sellers</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="logo">
+
+<a href="admin.html">
+
+<img src="images/logo.png" alt="I MART">
+
+</a>
+
+</div>
+
+<nav>
+
+<a href="admin.html">Dashboard</a>
+
+<a href="admin-sellers.html" class="active">Sellers</a>
+
+<a href="products.html">Marketplace</a>
+
+<a href="#" onclick="logout()">Logout</a>
+
+</nav>
+
+</header>
+
+<section class="admin-page">
+
+<h1>Seller Management</h1>
+
+<p>
+Approve, reject, suspend and manage marketplace sellers.
+</p>
+
+<!-- Statistics -->
+
+<div class="admin-cards">
+
+<div class="admin-card">
+
+<h3>Total Sellers</h3>
+
+<h2 id="totalSellers">0</h2>
+
+</div>
+
+<div class="admin-card">
+
+<h3>Pending</h3>
+
+<h2 id="pendingSellers">0</h2>
+
+</div>
+
+<div class="admin-card">
+
+<h3>Approved</h3>
+
+<h2 id="approvedSellers">0</h2>
+
+</div>
+
+<div class="admin-card">
+
+<h3>Suspended</h3>
+
+<h2 id="suspendedSellers">0</h2>
+
+</div>
+
+</div>
+
+<!-- Seller Table -->
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Business</th>
+
+<th>Owner</th>
+
+<th>Email</th>
+
+<th>Phone</th>
+
+<th>Plan</th>
+
+<th>Status</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="sellerTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<script src="js/auth.js"></script>
+
+<script src="js/admin-sellers.js"></script>
+
+<script>
+
+protectAdmin();
+
+</script>
+
+</body>
+
+</html>

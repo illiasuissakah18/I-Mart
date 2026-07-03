@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Customer Dashboard | I MART</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/auth.css">
+
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="logo">
+
+        <a href="index.html">
+
+            <img src="images/logo.png" alt="I MART Logo">
+
+        </a>
+
+    </div>
+
+    <nav>
+
+        <a href="index.html">Home</a>
+
+        <a href="products.html">Products</a>
+
+        <a href="cart.html">Cart</a>
+
+        <a href="wishlist.html">Wishlist</a>
+
+        <a href="my-orders.html">My Orders</a>
+
+        <a href="#" onclick="customerLogout()">Logout</a>
+
+    </nav>
+
+</header>
+
+<!-- ================= PAGE TITLE ================= -->
+
+<section class="page-title">
+
+    <h1 id="welcomeMessage">
+
+        Welcome
+
+    </h1>
+
+    <p>
+
+        Manage your I MART account from one place.
+
+    </p>
+
+</section>
+
+<!-- ================= SUMMARY ================= -->
+
+<section class="dashboard-summary">
+
+    <div class="dashboard-cards">
+
+        <div class="dashboard-card">
+
+            <h3>Orders</h3>
+
+            <h2 id="orderCount">0</h2>
+
+        </div>
+
+        <div class="dashboard-card">
+
+            <h3>Wishlist</h3>
+
+            <h2 id="wishlistCount">0</h2>
+
+        </div>
+
+        <div class="dashboard-card">
+
+            <h3>Cart Items</h3>
+
+            <h2 id="cartCount">0</h2>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= QUICK LINKS ================= -->
+
+<section class="dashboard-links">
+
+    <a href="products.html" class="dashboard-link">
+
+        🛍️ Continue Shopping
+
+    </a>
+
+    <a href="cart.html" class="dashboard-link">
+
+        🛒 View Cart
+
+    </a>
+
+    <a href="wishlist.html" class="dashboard-link">
+
+        ❤️ My Wishlist
+
+    </a>
+
+    <a href="my-orders.html" class="dashboard-link">
+
+        📦 My Orders
+
+    </a>
+
+</section>
+
+<!-- ================= PROFILE ================= -->
+
+<section class="profile-card">
+
+    <h2>My Profile</h2>
+
+    <p><strong>Name:</strong> <span id="profileName"></span></p>
+
+    <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+
+    <p><strong>Phone:</strong> <span id="profilePhone"></span></p>
+
+    <p><strong>Member Since:</strong> <span id="profileJoined"></span></p>
+
+</section>
+
+<script src="js/customer-auth.js"></script>
+<script src="js/customer-dashboard.js"></script>
+
+<script>
+
+protectCustomerDashboard();
+
+</script>
+
+</body>
+
+</html>

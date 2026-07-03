@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Products | I MART Fashion Marketplace</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="logo">
+
+        <a href="index.html">
+
+            <img src="images/logo.png" alt="I MART Logo">
+
+        </a>
+
+    </div>
+
+    <form class="search-bar">
+
+        <input
+        type="text"
+        placeholder="Search products...">
+
+        <button type="submit">
+
+            <i class="fas fa-search"></i>
+
+        </button>
+
+    </form>
+
+    <div class="header-icons">
+
+        <a href="login.html">
+
+            <i class="fas fa-user"></i>
+
+            <span>Account</span>
+
+        </a>
+
+        <a href="wishlist.html">
+
+            <i class="fas fa-heart"></i>
+
+            <span>Wishlist</span>
+
+        </a>
+
+        <a href="cart.html" class="cart-icon">
+
+            <i class="fas fa-shopping-cart"></i>
+
+            <span>Cart</span>
+
+            <small class="cart-count">0</small>
+
+        </a>
+
+    </div>
+
+</header>
+
+<!-- ================= NAVIGATION ================= -->
+
+<nav class="navbar">
+
+<ul>
+
+<li><a href="index.html">Home</a></li>
+
+<li><a class="active" href="products.html">Products</a></li>
+
+<li><a href="#">Men</a></li>
+
+<li><a href="#">Women</a></li>
+
+<li><a href="#">Kids</a></li>
+
+<li><a href="#">Shoes</a></li>
+
+<li><a href="#">Accessories</a></li>
+
+<li><a href="contact.html">Contact</a></li>
+
+</ul>
+
+</nav>
+
+<!-- ================= BREADCRUMB ================= -->
+
+<section class="breadcrumb">
+
+<div class="container">
+
+<a href="index.html">Home</a>
+
+<span> / </span>
+
+<strong>Products</strong>
+
+</div>
+
+</section>
+
+<!-- ================= PRODUCTS PAGE ================= -->
+
+<section class="products-page">
+
+<!-- ===== Sidebar ===== -->
+
+<aside class="sidebar">
+
+<h2>Categories</h2>
+
+<ul>
+
+<li><a href="#">👔 Men's Fashion</a></li>
+
+<li><a href="#">👗 Women's Fashion</a></li>
+
+<li><a href="#">🧒 Kids Fashion</a></li>
+
+<li><a href="#">👟 Shoes</a></li>
+
+<li><a href="#">👜 Bags</a></li>
+
+<li><a href="#">⌚ Watches</a></li>
+
+<li><a href="#">💍 Jewelry</a></li>
+
+<li><a href="#">🕶 Sunglasses</a></li>
+
+<li><a href="#">💄 Beauty</a></li>
+
+<li><a href="#">🌸 Perfumes</a></li>
+
+</ul>
+
+<hr>
+
+<h2>Price Range</h2>
+
+<label>
+
+<input type="checkbox">
+
+GH₵0 - GH₵100
+
+</label>
+
+<label>
+
+<input type="checkbox">
+
+GH₵100 - GH₵300
+
+</label>
+
+<label>
+
+<input type="checkbox">
+
+GH₵300 - GH₵600
+
+</label>
+
+<label>
+
+<input type="checkbox">
+
+GH₵600+
+
+</label>
+
+<hr>
+
+<h2>Brands</h2>
+
+<label><input type="checkbox"> Nike</label>
+
+<label><input type="checkbox"> Adidas</label>
+
+<label><input type="checkbox"> Gucci</label>
+
+<label><input type="checkbox"> Zara</label>
+
+<label><input type="checkbox"> Louis Vuitton</label>
+
+<label><input type="checkbox"> Puma</label>
+
+</aside>
+
+<!-- ===== Products Area ===== -->
+
+<div class="products-content">
+
+<div class="products-toolbar">
+
+<h2>All Fashion Products</h2>
+
+<select>
+
+<option>Sort By</option>
+
+<option>Newest</option>
+
+<option>Price: Low to High</option>
+
+<option>Price: High to Low</option>
+
+<option>Best Selling</option>
+
+</select>
+
+</div>
+
+<div class="product-grid">
+    <!-- ================= PRODUCT 1 ================= -->
+
+<div class="product-card">
+
+    <span class="badge sale">SALE</span>
+
+    <img src="images/products/product1.jpg" alt="Premium Men's T-Shirt">
+
+    <div class="product-info">
+
+        <h3>Premium Men's T-Shirt</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐⭐
+        </div>
+
+        <p class="price">
+            GH₵120
+            <span>GH₵160</span>
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">
+                ❤
+            </button>
+
+            <button class="btn cart-btn">
+                🛒
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 2 ================= -->
+
+<div class="product-card">
+
+    <span class="badge new">NEW</span>
+
+    <img src="images/products/product2.jpg" alt="Elegant Ladies Dress">
+
+    <div class="product-info">
+
+        <h3>Elegant Ladies Dress</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐⭐
+        </div>
+
+        <p class="price">
+
+            GH₵240
+
+            <span>GH₵300</span>
+
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 3 ================= -->
+
+<div class="product-card">
+
+    <span class="badge hot">HOT</span>
+
+    <img src="images/products/product3.jpg" alt="Classic Sneakers">
+
+    <div class="product-info">
+
+        <h3>Classic Sneakers</h3>
+
+        <div class="rating">
+
+            ⭐⭐⭐⭐⭐
+
+        </div>
+
+        <p class="price">
+
+            GH₵350
+
+            <span>GH₵420</span>
+
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 4 ================= -->
+
+<div class="product-card">
+
+    <img src="images/products/product4.jpg" alt="Luxury Leather Bag">
+
+    <div class="product-info">
+
+        <h3>Luxury Leather Bag</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐☆
+        </div>
+
+        <p class="price">
+
+            GH₵280
+
+            <span>GH₵350</span>
+
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 5 ================= -->
+
+<div class="product-card">
+
+    <span class="badge sale">SALE</span>
+
+    <img src="images/products/product5.jpg" alt="Luxury Wrist Watch">
+
+    <div class="product-info">
+
+        <h3>Luxury Wrist Watch</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐⭐
+        </div>
+
+        <p class="price">
+
+            GH₵450
+
+            <span>GH₵520</span>
+
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 6 ================= -->
+
+<div class="product-card">
+
+    <span class="badge new">NEW</span>
+
+    <img src="images/products/product6.jpg" alt="Fashion Cap">
+
+    <div class="product-info">
+
+        <h3>Fashion Cap</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐☆
+        </div>
+
+        <p class="price">
+
+            GH₵90
+
+            <span>GH₵120</span>
+
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ================= PRODUCT 7 ================= -->
+
+<div class="product-card">
+
+    <span class="badge hot">HOT</span>
+
+    <img src="images/products/product7.jpg" alt="Women's Handbag">
+
+    <div class="product-info">
+
+        <h3>Women's Handbag</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐⭐
+        </div>
+
+        <p class="price">
+            GH₵260
+            <span>GH₵320</span>
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 8 ================= -->
+
+<div class="product-card">
+
+    <img src="images/products/product8.jpg" alt="Sports Shoes">
+
+    <div class="product-info">
+
+        <h3>Sports Shoes</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐☆
+        </div>
+
+        <p class="price">
+            GH₵390
+            <span>GH₵450</span>
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 9 ================= -->
+
+<div class="product-card">
+
+    <span class="badge sale">SALE</span>
+
+    <img src="images/products/product9.jpg" alt="Designer Sunglasses">
+
+    <div class="product-info">
+
+        <h3>Designer Sunglasses</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐⭐
+        </div>
+
+        <p class="price">
+            GH₵180
+            <span>GH₵230</span>
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 10 ================= -->
+
+<div class="product-card">
+
+    <span class="badge new">NEW</span>
+
+    <img src="images/products/product10.jpg" alt="Gold Necklace">
+
+    <div class="product-info">
+
+        <h3>Gold Necklace</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐⭐
+        </div>
+
+        <p class="price">
+            GH₵600
+            <span>GH₵700</span>
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 11 ================= -->
+
+<div class="product-card">
+
+    <img src="images/products/product11.jpg" alt="Luxury Perfume">
+
+    <div class="product-info">
+
+        <h3>Luxury Perfume</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐☆
+        </div>
+
+        <p class="price">
+            GH₵310
+            <span>GH₵370</span>
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PRODUCT 12 ================= -->
+
+<div class="product-card">
+
+    <span class="badge hot">HOT</span>
+
+    <img src="images/products/product12.jpg" alt="Ladies High Heels">
+
+    <div class="product-info">
+
+        <h3>Ladies High Heels</h3>
+
+        <div class="rating">
+            ⭐⭐⭐⭐⭐
+        </div>
+
+        <p class="price">
+            GH₵340
+            <span>GH₵410</span>
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="product-details.html" class="btn">View</a>
+
+            <button class="btn wishlist-btn">❤</button>
+
+            <button class="btn cart-btn">🛒</button>
+
+        </div>
+
+    </div>
+
+</div>
+    </div>
+
+    <!-- ================= PAGINATION ================= -->
+
+    <div class="pagination">
+
+        <a href="#" class="active">1</a>
+
+        <a href="#">2</a>
+
+        <a href="#">3</a>
+
+        <a href="#">4</a>
+
+        <a href="#">Next →</a>
+
+    </div>
+
+</div>
+
+</section>
+
+<!-- ================= NEWSLETTER ================= -->
+
+<section class="newsletter">
+
+    <h2>Subscribe to Our Newsletter</h2>
+
+    <p>
+
+        Receive updates on new arrivals, discounts and exclusive fashion deals.
+
+    </p>
+
+    <form>
+
+        <input
+        type="email"
+        placeholder="Enter your email address"
+        required>
+
+        <button class="btn">
+
+            Subscribe
+
+        </button>
+
+    </form>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>I MART</h3>
+
+<p>
+
+Your trusted online fashion marketplace connecting customers with quality sellers.
+
+</p>
+
+</div>
+
+<div class="footer-box">
+
+<h3>Quick Links</h3>
+
+<a href="index.html">Home</a>
+
+<a href="products.html">Products</a>
+
+<a href="about.html">About Us</a>
+
+<a href="contact.html">Contact</a>
+
+</div>
+
+<div class="footer-box">
+
+<h3>Customer Service</h3>
+
+<a href="login.html">Login</a>
+
+<a href="register.html">Register</a>
+
+<a href="cart.html">Shopping Cart</a>
+
+<a href="wishlist.html">Wishlist</a>
+
+</div>
+
+<div class="footer-box">
+
+<h3>Follow Us</h3>
+
+<div class="social-links">
+
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+
+<a href="#"><i class="fab fa-instagram"></i></a>
+
+<a href="#"><i class="fab fa-x-twitter"></i></a>
+
+<a href="#"><i class="fab fa-tiktok"></i></a>
+
+<a href="#"><i class="fab fa-youtube"></i></a>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+<p>
+
+© 2026 I MART Fashion Marketplace. All Rights Reserved.
+
+</p>
+
+</div>
+
+</footer>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script src="js/products-data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/wishlist.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+
+</html>

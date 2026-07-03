@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard | I MART</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/seller.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="I MART Logo">
+            </a>
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="products.html">Marketplace</a>
+            <a href="seller-products.html">My Products</a>
+            <a href="seller-orders.html">Orders</a>
+            <a href="#" onclick="sellerLogout()">Logout</a>
+        </nav>
+
+    </header>
+
+    <!-- DASHBOARD -->
+    <section class="seller-dashboard">
+
+        <h1 id="sellerName">Welcome Seller</h1>
+
+        <p>
+            Manage your store, products and orders from one dashboard.
+        </p>
+
+        <!-- DASHBOARD CARDS -->
+
+        <div class="dashboard-cards">
+
+            <div class="dashboard-card">
+                <h3>Total Products</h3>
+                <h2 id="totalProducts">0</h2>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Total Orders</h3>
+                <h2 id="totalOrders">0</h2>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Total Sales</h3>
+                <h2 id="totalSales">GH₵0.00</h2>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Subscription</h3>
+                <h2 id="subscriptionStatus">Inactive</h2>
+            </div>
+
+        </div>
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="dashboard-actions">
+
+            <a href="seller-products.html" class="btn">
+                📦 Manage Products
+            </a>
+
+            <a href="seller-orders.html" class="btn">
+                🛒 View Orders
+            </a>
+
+            <a href="add-product.html" class="btn">
+                ➕ Add Product
+            </a>
+
+            <a href="#" onclick="sellerLogout()" class="btn">
+                🚪 Logout
+            </a>
+
+        </div>
+
+        <!-- SALES OVERVIEW -->
+
+        <section class="dashboard-section">
+
+            <h2>📊 Sales Overview</h2>
+
+            <div class="overview-box">
+                <p>
+                    Track your performance and monitor your store growth in real time.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- RECENT ORDERS -->
+
+        <section class="dashboard-section">
+
+            <h2>🛒 Recent Orders</h2>
+
+            <div id="recentOrders">
+                <p>No recent orders yet.</p>
+            </div>
+
+        </section>
+
+        <!-- TOP PRODUCTS -->
+
+        <section class="dashboard-section">
+
+            <h2>⭐ Top Selling Products</h2>
+
+            <div id="topProducts">
+                <p>No product data yet.</p>
+            </div>
+
+        </section>
+
+        <!-- SELLER PROFILE -->
+
+        <section class="dashboard-section profile-box">
+
+            <h2>👤 Store Profile</h2>
+
+            <p><strong>Shop Name:</strong> <span id="shopName">Loading...</span></p>
+
+            <p><strong>Email:</strong> <span id="sellerEmail">Loading...</span></p>
+
+            <p><strong>Status:</strong> <span id="sellerStatus">Active</span></p>
+
+            <p><strong>Subscription:</strong> <span id="subscriptionPlan">Basic</span></p>
+
+            <!-- ===============================
+SUBSCRIPTION & BILLING
+=============================== -->
+
+<section class="dashboard-section billing-box">
+
+    <h2>💳 Monthly Subscription</h2>
+
+    <p>
+        <strong>Monthly Fee:</strong>
+        <span id="monthlyFee">GH₵20.00</span>
+    </p>
+
+    <p>
+        <strong>Billing Status:</strong>
+        <span id="billingStatus">Paid</span>
+    </p>
+
+    <p>
+        <strong>Next Billing Date:</strong>
+        <span id="nextBillingDate">Loading...</span>
+    </p>
+
+    <p>
+        <strong>Account Status:</strong>
+        <span id="accountStatus">Active</span>
+    </p>
+
+    <button
+        id="paySubscriptionBtn"
+        class="btn"
+        onclick="paySubscription()">
+
+        💳 Pay Monthly Subscription
+
+    </button>
+
+</section>
+
+        </section>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 I MART Marketplace. All rights reserved.
+        </p>
+
+    </footer>
+
+    <!-- JAVASCRIPT -->
+
+    <script src="js/seller-auth.js"></script>
+    <script src="js/seller-dashboard.js"></script>
+
+    <script>
+
+        if (typeof protectSellerDashboard === "function") {
+    protectSellerDashboard();
+}
+
+        if (typeof loadDashboard === "function") {
+            loadDashboard();
+        }
+
+    </script>
+
+<script>
+
+async function paySubscription() {
+
+    alert("Paystack integration will be connected in the next step.");
+
+}
+
+</script>
+
+</body>
+
+</html>

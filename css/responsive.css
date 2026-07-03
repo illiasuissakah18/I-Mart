@@ -1,0 +1,20 @@
+/* responsive.css v1.0 */
+@media (max-width:992px){
+.hero{grid-template-columns:1fr;text-align:center}
+.search-bar{max-width:none}
+}
+@media (max-width:768px){
+.header{flex-direction:column;align-items:stretch}
+.header-icons{justify-content:center}
+.navbar ul{flex-direction:column}
+.navbar a{text-align:center}
+.newsletter form{flex-direction:column;gap:10px}
+.btn{display:block;margin:10px auto;max-width:220px;text-align:center}
+}
+@media (max-width:480px){
+.hero h1{font-size:2rem}
+.hero h2{font-size:1.2rem}
+.section-title h2{font-size:1.6rem}
+.product-grid,.category-grid,.features,.review-container,.footer-container{grid-template-columns:1fr}
+.logo img{height:45px}
+}

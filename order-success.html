@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Order Successful | I MART</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/checkout.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="logo">
+
+<a href="index.html">
+
+<img src="images/logo.png" alt="I MART Logo">
+
+</a>
+
+</div>
+
+<nav>
+
+<a href="index.html">Home</a>
+
+<a href="products.html">Products</a>
+
+<a href="cart.html">Cart</a>
+
+</nav>
+
+</header>
+
+<section class="success-container">
+
+<div class="success-card">
+
+<div class="success-icon">
+
+✅
+
+</div>
+
+<h1>Order Placed Successfully!</h1>
+
+<p>
+
+Thank you for shopping with <strong>I MART</strong>.
+
+Your order has been received and is being processed.
+
+</p>
+
+<hr>
+
+<div class="order-details">
+
+<p><strong>Order ID:</strong> <span id="orderId">-</span></p>
+
+<p><strong>Customer:</strong> <span id="customerName">-</span></p>
+
+<p><strong>Phone:</strong> <span id="customerPhone">-</span></p>
+
+<p><strong>Address:</strong> <span id="customerAddress">-</span></p>
+
+<p><strong>Payment Method:</strong> <span id="paymentMethod">-</span></p>
+
+<p><strong>Payment Status:</strong> <span id="paymentStatus">-</span></p>
+
+<p><strong>Order Status:</strong> <span id="orderStatus">-</span></p>
+
+<p><strong>Order Date:</strong> <span id="orderDate">-</span></p>
+
+<p><strong>Total:</strong> GH₵<span id="orderTotal">0.00</span></p>
+
+</div>
+
+<hr>
+
+<h2>Items Purchased</h2>
+
+<div id="orderItems">
+
+<p>No items found.</p>
+
+</div>
+
+<div class="success-buttons">
+
+<a href="products.html" class="btn">
+
+Continue Shopping
+
+</a>
+
+<a href="my-orders.html" class="btn">
+
+Track My Orders
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const order = JSON.parse(localStorage.getItem("lastOrder"));
+
+    if (!order) {
+
+        window.location.href = "index.html";
+
+        return;
+
+    }
+
+    document.getElementById("orderId").textContent = order.id;
+
+    document.getElementById("customerName").textContent = order.customer.name;
+
+    document.getElementById("customerPhone").textContent = order.customer.phone;
+
+    document.getElementById("customerAddress").textContent = order.customer.address;
+
+    document.getElementById("paymentMethod").textContent = order.paymentMethod;
+
+    document.getElementById("paymentStatus").textContent = order.paymentStatus;
+
+    document.getElementById("orderStatus").textContent = order.orderStatus;
+
+    document.getElementById("orderDate").textContent = order.createdAt;
+
+    document.getElementById("orderTotal").textContent = Number(order.total).toFixed(2);
+
+    const itemsContainer = document.getElementById("orderItems");
+
+    itemsContainer.innerHTML = "";
+
+    order.items.forEach(item => {
+
+        itemsContainer.innerHTML += `
+
+        <div class="order-item">
+
+            <img src="${item.image}" alt="${item.productName}" width="70">
+
+            <div>
+
+                <h4>${item.productName}</h4>
+
+                <p>Quantity: ${item.quantity}</p>
+
+                <p>Price: GH₵${item.price}</p>
+
+                <p>Subtotal: GH₵${item.subtotal}</p>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+});
+
+</script>
+
+</body>
+
+</html>
