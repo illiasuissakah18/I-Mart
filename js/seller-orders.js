@@ -1,266 +1,145 @@
 /*
 ==========================================
 I MART Marketplace
-File: seller-orders.js
-Version: 2.0
-Seller Orders System
+Seller Orders
+Version: 3.0
 ==========================================
 */
 
-document.addEventListener("DOMContentLoaded", () => {
+const API = "https://illiasu-imart-api.onrender.com";
 
-    protectSeller();
+const token = localStorage.getItem("sellerToken");
 
-    loadSellerOrders();
+const container = document.getElementById("ordersContainer");
 
-});
+async function loadOrders() {
 
-// ===============================
-// PROTECT PAGE
-// ===============================
+    try {
 
-function protectSeller() {
+        const res = await fetch(`${API}/api/orders/seller`, {
 
-    const seller = getCurrentSeller();
-
-    if (!seller) {
-
-        window.location.href = "seller-login.html";
-
-    }
-
-}
-
-// ===============================
-// LOAD ORDERS
-// ===============================
-
-function loadSellerOrders() {
-
-    const container =
-        document.getElementById("sellerOrders");
-
-    if (!container) return;
-
-    const seller =
-        getCurrentSeller();
-
-    const orders =
-        JSON.parse(localStorage.getItem("orders")) || [];
-
-    let sellerOrders = [];
-
-    orders.forEach(order => {
-
-        order.items.forEach(item => {
-
-            if (item.sellerId === seller.id) {
-
-                sellerOrders.push({
-
-                    orderId: order.id,
-
-                    customer: order.customer,
-
-                    paymentMethod: order.paymentMethod,
-
-                    paymentStatus: order.paymentStatus,
-
-                    createdAt: order.createdAt,
-
-                    total: item.subtotal,
-
-                    product: item
-
-                });
-
+            headers: {
+                Authorization: `Bearer ${token}`
             }
 
         });
 
-    });
+        const data = await res.json();
 
-    if (sellerOrders.length === 0) {
+        if (!data.success) {
 
-        container.innerHTML = `
+            container.innerHTML =
+                "<tr><td colspan='7'>No orders found.</td></tr>";
 
-        <div class="empty-orders">
+            return;
 
-            <h2>No Orders Yet</h2>
+        }
 
-            <p>
+        container.innerHTML = "";
 
-                Your products have not been ordered yet.
+        let pending = 0;
+        let processing = 0;
+        let delivered = 0;
 
-            </p>
+        data.orders.forEach(order => {
 
-        </div>
+            if (order.orderStatus === "Pending") pending++;
+            if (order.orderStatus === "Processing") processing++;
+            if (order.orderStatus === "Delivered") delivered++;
 
-        `;
+            const product = order.products[0];
 
-        return;
+            container.innerHTML += `
 
-    }
+<tr>
 
-    container.innerHTML = "";
+<td>${order._id.slice(-6)}</td>
 
-    sellerOrders.forEach(order => {
+<td>${order.customer.fullName}</td>
 
-        container.innerHTML += createSellerOrderCard(order);
+<td>${product.name}</td>
 
-    });
+<td>${product.quantity}</td>
 
-}
+<td>GH₵${order.total}</td>
 
-// ===============================
-// ORDER CARD
-// ===============================
+<td>${order.orderStatus}</td>
 
-function createSellerOrderCard(order) {
+<td>
 
-    return `
+<button onclick="markDelivered('${order._id}')">
 
-<div class="seller-order-card">
+Delivered
 
-    <div class="seller-order-header">
+</button>
 
-        <h2>
+</td>
 
-            Order #${order.orderId}
-
-        </h2>
-
-    </div>
-
-    <img
-        src="${order.product.image}"
-        width="90"
-        alt="${order.product.productName}"
-    >
-
-    <h3>
-
-        ${order.product.productName}
-
-    </h3>
-
-    <p>
-
-        Customer:
-        ${order.customer.name}
-
-    </p>
-
-    <p>
-
-        Phone:
-        ${order.customer.phone}
-
-    </p>
-
-    <p>
-
-        Address:
-        ${order.customer.address}
-
-    </p>
-
-    <p>
-
-        Quantity:
-        ${order.product.quantity}
-
-    </p>
-
-    <p>
-
-        Total:
-        GH₵${Number(order.total).toFixed(2)}
-
-    </p>
-
-    <p>
-
-        Payment:
-        ${order.paymentMethod}
-
-    </p>
-
-    <p>
-
-        Payment Status:
-        ${order.paymentStatus}
-
-    </p>
-
-    <p>
-
-        Order Status:
-
-        <strong id="status-${order.orderId}-${order.product.productId}">
-
-            ${order.product.orderStatus}
-
-        </strong>
-
-    </p>
-
-    <select
-        onchange="changeStatus('${order.orderId}',${order.product.productId},this.value)"
-    >
-
-        <option value="">Update Status</option>
-
-        <option>Pending</option>
-
-        <option>Confirmed</option>
-
-        <option>Processing</option>
-
-        <option>Shipped</option>
-
-        <option>Delivered</option>
-
-        <option>Cancelled</option>
-
-    </select>
-
-</div>
+</tr>
 
 `;
 
-}
+        });
 
-// ===============================
-// UPDATE STATUS
-// ===============================
+        document.getElementById("totalOrders").textContent =
+            data.orders.length;
 
-function changeStatus(orderId, productId, status) {
+        document.getElementById("pendingOrders").textContent =
+            pending;
 
-    if (!status) return;
+        document.getElementById("processingOrders").textContent =
+            processing;
 
-    updateOrderItemStatus(
-        orderId,
-        productId,
-        status
-    );
+        document.getElementById("deliveredOrders").textContent =
+            delivered;
 
-    loadSellerOrders();
+    } catch (err) {
 
-    alert("Order status updated.");
+        console.error(err);
 
-}
+        container.innerHTML =
+            "<tr><td colspan='7'>Server Error.</td></tr>";
 
-// ===============================
-// REFRESH
-// ===============================
-
-function refreshSellerOrders() {
-
-    loadSellerOrders();
+    }
 
 }
 
-console.log(
-    "Seller Orders v2.0 Loaded"
-);
+async function markDelivered(id) {
+
+    try {
+
+        const res = await fetch(`${API}/api/orders/${id}`, {
+
+            method: "PUT",
+
+            headers: {
+
+                "Content-Type": "application/json",
+
+                Authorization: `Bearer ${token}`
+
+            },
+
+            body: JSON.stringify({
+
+                orderStatus: "Delivered"
+
+            })
+
+        });
+
+        const data = await res.json();
+
+        alert(data.message);
+
+        loadOrders();
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
+}
+
+loadOrders();

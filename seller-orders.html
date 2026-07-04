@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I MART Seller Orders</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Seller Orders | I MART</title>
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/seller.css">
+
 </head>
+
 <body>
 
 <!-- ================= HEADER ================= -->
@@ -15,16 +22,25 @@
 <header class="header">
 
     <div class="logo">
+
         <a href="seller-dashboard.html">
+
             <img src="images/logo.png" alt="I MART Logo">
+
         </a>
+
     </div>
 
     <nav>
+
         <a href="seller-dashboard.html">Dashboard</a>
-        <a href="seller-products.html">Products</a>
+
+        <a href="seller-products.html">My Products</a>
+
         <a href="seller-orders.html" class="active">Orders</a>
-        <a href="#" onclick="sellerLogout()">Logout</a>
+
+        <a href="#" onclick="logoutSeller()">Logout</a>
+
     </nav>
 
 </header>
@@ -36,7 +52,9 @@
     <h1>My Orders</h1>
 
     <p>
-        Manage customer orders for your products.
+
+        View and manage all customer orders for your products.
+
     </p>
 
 </section>
@@ -48,30 +66,42 @@
     <div class="dashboard-cards">
 
         <div class="dashboard-card">
+
             <h3>Total Orders</h3>
+
             <h2 id="totalOrders">0</h2>
+
         </div>
 
         <div class="dashboard-card">
+
             <h3>Pending</h3>
+
             <h2 id="pendingOrders">0</h2>
+
         </div>
 
         <div class="dashboard-card">
+
             <h3>Processing</h3>
+
             <h2 id="processingOrders">0</h2>
+
         </div>
 
         <div class="dashboard-card">
+
             <h3>Delivered</h3>
+
             <h2 id="deliveredOrders">0</h2>
+
         </div>
 
     </div>
 
 </section>
 
-<!-- ================= ORDERS TABLE ================= -->
+<!-- ================= ORDERS ================= -->
 
 <section class="seller-orders">
 
@@ -101,7 +131,17 @@
 
             </thead>
 
-            <tbody id="sellerOrdersTable">
+            <tbody id="ordersContainer">
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Loading orders...
+
+                    </td>
+
+                </tr>
 
             </tbody>
 
@@ -111,15 +151,34 @@
 
 </section>
 
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <p>
+
+        © 2026 I MART Marketplace. All rights reserved.
+
+    </p>
+
+</footer>
+
+<!-- ================= JAVASCRIPT ================= -->
+
 <script src="js/seller-auth.js"></script>
 
 <script src="js/seller-orders.js"></script>
 
 <script>
 
-protectSellerDashboard();
+if (typeof protectSellerDashboard === "function") {
+
+    protectSellerDashboard();
+
+}
 
 </script>
 
 </body>
+
 </html>
