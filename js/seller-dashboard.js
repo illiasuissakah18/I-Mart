@@ -2,176 +2,136 @@
 ==========================================
 I MART Marketplace
 Seller Dashboard
-Version 2.0
+Version 5.0
 ==========================================
 */
 
+const API = "https://illiasu-imart-api.onrender.com";
+
+// ===============================
+// LOAD DASHBOARD
+// ===============================
+
 document.addEventListener("DOMContentLoaded", () => {
-
-    protectSeller();
-
-    protectSubscription(); // 👈 ADD THIS
 
     loadDashboard();
 
 });
 
-// ==========================
-// LOAD DASHBOARD
-// ==========================
+// ===============================
+// LOAD SELLER DATA
+// ===============================
 
-function loadDashboard() {
+async function loadDashboard() {
 
-    const seller = getCurrentSeller();
+    const token = localStorage.getItem("sellerToken");
 
-    if (!seller) {
+    if (!token) {
 
         window.location.href = "seller-login.html";
-
         return;
 
     }
 
-    loadSellerInfo(seller);
+    try {
 
-    loadStatistics(seller);
+        const response = await fetch(`${API}/api/sellers/profile`, {
 
-}
+            method: "GET",
 
-// ==========================
-// SELLER INFO
-// ==========================
+            headers: {
 
-function loadSellerInfo(seller) {
-
-    const welcome =
-        document.getElementById("sellerName");
-
-    if (welcome) {
-
-        welcome.innerHTML =
-            "Welcome, " + seller.shopName;
-
-    }
-
-}
-
-// ==========================
-// STATISTICS
-// ==========================
-
-function loadStatistics(seller) {
-
-    const products =
-        JSON.parse(localStorage.getItem("products")) || [];
-
-    const orders =
-        JSON.parse(localStorage.getItem("orders")) || [];
-
-    const myProducts = products.filter(product =>
-        product.sellerId === seller.id
-    );
-
-    let totalOrders = 0;
-
-    let totalSales = 0;
-
-    orders.forEach(order => {
-
-        order.items.forEach(item => {
-
-            if (item.sellerId === seller.id) {
-
-                totalOrders++;
-
-                totalSales += Number(item.subtotal);
+                Authorization: `Bearer ${token}`
 
             }
 
         });
 
-    });
-
-    const totalProducts =
-        myProducts.length;
-
-    document.getElementById("totalProducts").innerText =
-        totalProducts;
-
-    document.getElementById("totalOrders").innerText =
-        totalOrders;
-
-    document.getElementById("totalSales").innerText =
-        "GH₵" + totalSales.toFixed(2);
-
-    document.getElementById("subscriptionStatus").innerText =
-        seller.subscriptionStatus || "Inactive";
-
-}
-
-// ==========================
-// LOGOUT
-// ==========================
-
-function sellerLogout() {
-
-    localStorage.removeItem("currentSeller");
-
-    window.location.href =
-        "seller-login.html";
-
-}
-
-console.log("Seller Dashboard v2.0 Loaded");
-
-// ======================================
-// PAY MONTHLY SUBSCRIPTION
-// ======================================
-
-async function paySubscription() {
-
-    try {
-
-        // Get logged in seller
-        const seller = JSON.parse(localStorage.getItem("seller"));
-
-        if (!seller) {
-            alert("Please login again.");
-            return;
-        }
-
-        const response = await fetch(
-            "https://illiasu-imart-api.onrender.com/api/subscription/initialize",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    sellerId: seller._id
-                })
-            }
-        );
-
         const data = await response.json();
 
-        if (data.success) {
+        if (!response.ok) {
 
-            // Redirect to Paystack
-            window.location.href = data.authorization_url;
-
-        } else {
-
-            alert(data.message);
+            logoutSeller();
+            return;
 
         }
 
-    } catch (err) {
+        const seller = data.seller;
 
-        console.error(err);
+        // Save latest seller data
+        localStorage.setItem("seller", JSON.stringify(seller));
 
-        alert("Unable to initialize payment.");
+        // ===============================
+        // BASIC DETAILS
+        // ===============================
+
+        document.getElementById("seller-name").textContent =
+            seller.fullName;
+
+        document.getElementById("shop-name").textContent =
+            seller.shopName;
+
+        document.getElementById("seller-email").textContent =
+            seller.email;
+
+        // ===============================
+        // PROFILE
+        // ===============================
+
+        document.getElementById("shopName").textContent =
+            seller.shopName;
+
+        document.getElementById("sellerEmail").textContent =
+            seller.email;
+
+        document.getElementById("sellerStatus").textContent =
+            seller.status;
+
+        document.getElementById("subscriptionPlan").textContent =
+            seller.subscription;
+
+        // ===============================
+        // BILLING
+        // ===============================
+
+        document.getElementById("monthlyFee").textContent =
+            "GH₵" + seller.monthlyFee.toFixed(2);
+
+        document.getElementById("billingStatus").textContent =
+            seller.billingStatus;
+
+        document.getElementById("accountStatus").textContent =
+            seller.status;
+
+        document.getElementById("subscriptionStatus").textContent =
+            seller.subscription;
+
+        if (seller.nextBillingDate) {
+
+            document.getElementById("nextBillingDate").textContent =
+                new Date(seller.nextBillingDate).toLocaleDateString();
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to load seller dashboard.");
 
     }
+
+}
+
+// ===============================
+// LOGOUT
+// ===============================
+
+function logoutSeller() {
+
+    localStorage.removeItem("sellerToken");
+    localStorage.removeItem("seller");
+
+    window.location.href = "seller-login.html";
 
 }

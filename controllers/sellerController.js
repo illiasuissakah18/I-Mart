@@ -86,15 +86,17 @@ exports.loginSeller = async (req, res) => {
         }
 
         const token = jwt.sign(
-            {
-                sellerId: seller._id,
-                email: seller.email
-            },
-            process.env.JWT_SECRET || "imart_secret_key",
-            {
-                expiresIn: "7d"
-            }
-        );
+    {
+        _id: seller._id,
+        email: seller.email,
+        shopName: seller.shopName,
+        role: "seller"
+    },
+    process.env.JWT_SECRET || "imart_secret_key",
+    {
+        expiresIn: "7d"
+    }
+);
 
         res.status(200).json({
             success: true,
@@ -111,6 +113,39 @@ exports.loginSeller = async (req, res) => {
     } catch (error) {
 
         console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+
+};
+// ===============================
+// GET CURRENT SELLER
+// ===============================
+
+exports.getSellerProfile = async (req, res) => {
+
+    try {
+
+        const seller = await Seller.findById(req.seller._id)
+            .select("-password");
+
+        if (!seller) {
+            return res.status(404).json({
+                success: false,
+                message: "Seller not found."
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            seller
+        });
+
+    } catch (error) {
 
         res.status(500).json({
             success: false,
