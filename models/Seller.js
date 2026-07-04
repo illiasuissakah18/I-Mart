@@ -2,11 +2,12 @@
 ==========================================
 I MART Marketplace
 Seller Model
-Version: 2.0
+Version: 3.0 (Secure + Production Ready)
 ==========================================
 */
 
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const sellerSchema = new mongoose.Schema({
 
@@ -42,7 +43,9 @@ const sellerSchema = new mongoose.Schema({
 
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: 6,
+        select: false // hides password when querying DB
     },
 
     // ===============================
@@ -65,12 +68,12 @@ const sellerSchema = new mongoose.Schema({
     },
 
     // ===============================
-    // MONTHLY BILLING
+    // MONTHLY BILLING SYSTEM
     // ===============================
 
     monthlyFee: {
         type: Number,
-        default: 20 // Change to your preferred monthly fee (GH₵)
+        default: 20 // GH₵
     },
 
     billingStatus: {
@@ -87,9 +90,9 @@ const sellerSchema = new mongoose.Schema({
     nextBillingDate: {
         type: Date,
         default: () => {
-            const nextDate = new Date();
-            nextDate.setMonth(nextDate.getMonth() + 1);
-            return nextDate;
+            const next = new Date();
+            next.setMonth(next.getMonth() + 1);
+            return next;
         }
     },
 
@@ -101,5 +104,27 @@ const sellerSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+
+// ===============================
+// HASH PASSWORD BEFORE SAVE
+// ===============================
+sellerSchema.pre("save", async function (next) {
+
+    if (!this.isModified("password")) return next();
+
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+
+    next();
+});
+
+
+// ===============================
+// PASSWORD MATCH METHOD
+// ===============================
+sellerSchema.methods.matchPassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
 
 module.exports = mongoose.model("Seller", sellerSchema);
