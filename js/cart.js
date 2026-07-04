@@ -1,267 +1,77 @@
-/*
-==========================================
-I MART Marketplace
-File: cart.js
-Version: 3.0
-Customer Cart System
-==========================================
-*/
+const API_URL = "https://illiasu-imart-api.onrender.com/api/cart";
 
-// ============================
-// CURRENT CUSTOMER
-// ============================
-
-function getCurrentCustomer() {
-    return JSON.parse(localStorage.getItem("currentCustomer"));
-}
-
-// ============================
-// CART KEY
-// ============================
-
-function getCartKey() {
-
-    const customer = getCurrentCustomer();
-
-    if (customer) {
-        return `cart_${customer.id}`;
-    }
-
-    return "cart_guest";
-}
-
-// ============================
-// GET CART
-// ============================
-
-function getCart() {
-
-    return JSON.parse(
-        localStorage.getItem(getCartKey())
-    ) || [];
-
-}
-
-// ============================
-// SAVE CART
-// ============================
-
-function saveCart(cart) {
-
-    localStorage.setItem(
-        getCartKey(),
-        JSON.stringify(cart)
-    );
-
-}
-
-// ============================
+// ===============================
 // ADD TO CART
-// ============================
+// ===============================
+async function addToCart(productId) {
 
-function addToCart(productId) {
+    const token = localStorage.getItem("sellerToken");
 
-    const product = products.find(
-        p => p.id === productId
-    );
-
-    if (!product) {
-
-        alert("Product not found.");
-
+    if (!token) {
+        alert("Please login first");
         return;
-
     }
 
-    let cart = getCart();
+    try {
 
-    const existing = cart.find(
-        item => item.id === productId
-    );
-
-    if (existing) {
-
-        existing.quantity++;
-
-    } else {
-
-        cart.push({
-
-            ...product,
-
-            quantity: 1
-
+        const res = await fetch(`${API_URL}/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                productId,
+                quantity: 1
+            })
         });
 
+        const data = await res.json();
+
+        if (data.success) {
+            alert("Added to cart");
+            loadCartCount();
+        }
+
+    } catch (error) {
+        console.error(error);
     }
-
-    saveCart(cart);
-
-    updateCartCount();
-
-    alert(product.name + " added to cart.");
-
 }
 
-// ============================
-// REMOVE ITEM
-// ============================
+// ===============================
+// LOAD CART COUNT
+// ===============================
+async function loadCartCount() {
 
-function removeFromCart(productId) {
+    const token = localStorage.getItem("sellerToken");
 
-    let cart = getCart();
+    if (!token) return;
 
-    cart = cart.filter(
-        item => item.id !== productId
-    );
+    try {
 
-    saveCart(cart);
+        const res = await fetch(API_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
 
-    updateCartCount();
+        const data = await res.json();
 
+        if (data.success) {
+
+            const count = data.cart.length;
+
+            const cartBadge = document.querySelector(".cart-count");
+
+            if (cartBadge) {
+                cartBadge.textContent = count;
+            }
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
 }
 
-// ============================
-// CHANGE QUANTITY
-// ============================
-
-function increaseQuantity(productId) {
-
-    const cart = getCart();
-
-    const item = cart.find(
-        p => p.id === productId
-    );
-
-    if (!item) return;
-
-    item.quantity++;
-
-    saveCart(cart);
-
-    updateCartCount();
-
-    if (typeof loadCart === "function") {
-
-        loadCart();
-
-    }
-
-}
-
-function decreaseQuantity(productId) {
-
-    const cart = getCart();
-
-    const item = cart.find(
-        p => p.id === productId
-    );
-
-    if (!item) return;
-
-    item.quantity--;
-
-    if (item.quantity <= 0) {
-
-        removeFromCart(productId);
-
-        return;
-
-    }
-
-    saveCart(cart);
-
-    updateCartCount();
-
-    if (typeof loadCart === "function") {
-
-        loadCart();
-
-    }
-
-}
-
-// ============================
-// CLEAR CART
-// ============================
-
-function clearCart() {
-
-    localStorage.removeItem(
-        getCartKey()
-    );
-
-    updateCartCount();
-
-}
-
-// ============================
-// CART COUNT
-// ============================
-
-function updateCartCount() {
-
-    const cart = getCart();
-
-    const total = cart.reduce(
-
-        (sum, item) => sum + item.quantity,
-
-        0
-
-    );
-
-    const badge = document.querySelector(".cart-count");
-
-    if (badge) {
-
-        badge.textContent = total;
-
-    }
-
-}
-
-// ============================
-// INIT
-// ============================
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    updateCartCount();
-
-    if (typeof loadOrderSummary === "function") {
-        loadOrderSummary();
-    }
-
-});
-
-// ============================
-// GLOBAL FUNCTIONS
-// ============================
-
-window.getCart = getCart;
-window.saveCart = saveCart;
-window.addToCart = addToCart;
-window.removeFromCart = removeFromCart;
-window.increaseQuantity = increaseQuantity;
-window.decreaseQuantity = decreaseQuantity;
-window.clearCart = clearCart;
-window.updateCartCount = updateCartCount;
-// ============================
-// GO TO CHECKOUT
-// ============================
-
-function goToCheckout() {
-
-    const cart = getCart();
-
-    if (!cart || cart.length === 0) {
-        alert("Your cart is empty 🛒");
-        return;
-    }
-
-    window.location.href = "checkout.html";
-}
-
-// expose globally
-window.goToCheckout = goToCheckout;
+// auto load cart
+document.addEventListener("DOMContentLoaded", loadCartCount);
