@@ -1,134 +1,79 @@
-/*
-==========================================
-I MART Fashion Marketplace
-File: products.js
-Version: 2.1 FIXED
-Milestone: 2
-==========================================
-*/
+const API_URL = "https://illiasu-imart-api.onrender.com/api/products";
 
-let displayedProducts = [...getAllProducts()];
+document.addEventListener("DOMContentLoaded", () => {
+    loadProducts();
+});
 
-// ============================
-// DISPLAY PRODUCTS
-// ============================
+// ===============================
+// FETCH PRODUCTS FROM BACKEND
+// ===============================
+async function loadProducts() {
+    try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
 
-function displayProducts(productList) {
+        if (!data.success) {
+            console.log("Failed to load products");
+            return;
+        }
 
-    const productGrid = document.querySelector(".product-grid");
+        renderProducts(data.products);
 
-    if (!productGrid) {
-        console.log("No product grid found");
-        return;
+    } catch (error) {
+        console.error("Error loading products:", error);
     }
+}
 
-    productGrid.innerHTML = "";
+// ===============================
+// DISPLAY PRODUCTS
+// ===============================
+function renderProducts(products) {
 
-    productList.forEach(product => {
+    const grid = document.querySelector(".product-grid");
 
-        productGrid.innerHTML += `
-        
-        <div class="product-card">
+    if (!grid) return;
 
-            <span class="badge ${product.badge.toLowerCase()}">
-                ${product.badge}
-            </span>
+    grid.innerHTML = "";
 
-            <img src="${product.image}" alt="${product.name}">
+    products.forEach(product => {
+
+        const imageURL = product.image
+            ? `https://illiasu-imart-api.onrender.com/uploads/${product.image}`
+            : "images/default-product.png";
+
+        const card = document.createElement("div");
+        card.classList.add("product-card");
+
+        card.innerHTML = `
+            <img src="${imageURL}" alt="${product.name}">
 
             <div class="product-info">
-
                 <h3>${product.name}</h3>
 
-                <p>${product.category}</p>
-
-                <div class="rating">
-                    ⭐ ${product.rating} (${product.reviews})
-                </div>
+                <div class="rating">⭐⭐⭐⭐⭐</div>
 
                 <p class="price">
-                    GH₵${product.price}
-                    <span>GH₵${product.oldPrice}</span>
+                    GH₵ ${product.price}
                 </p>
 
                 <div class="product-buttons">
 
-                    <button onclick="addToWishlist(${product.id})">❤</button>
-
-                    <button onclick="addToCart(${product.id})">🛒</button>
-
-                    <a href="product-details.html?id=${product.id}" class="btn">
+                    <a href="product-details.html?id=${product._id}" class="btn">
                         View
                     </a>
 
+                    <button class="btn wishlist-btn" onclick="addToWishlist('${product._id}')">
+                        ❤
+                    </button>
+
+                    <button class="btn cart-btn" onclick="addToCart('${product._id}')">
+                        🛒
+                    </button>
+
                 </div>
-
             </div>
-
-        </div>
         `;
+
+        grid.appendChild(card);
     });
 }
-
-// ============================
-// SEARCH
-// ============================
-
-function liveSearch() {
-
-    const input = document.querySelector(".search-bar input");
-
-    if (!input) return;
-
-    input.addEventListener("input", function () {
-
-        const keyword = this.value.toLowerCase();
-
-        const filtered = products.filter(p =>
-            p.name.toLowerCase().includes(keyword) ||
-            p.category.toLowerCase().includes(keyword) ||
-            p.brand.toLowerCase().includes(keyword)
-        );
-
-        displayProducts(filtered);
-    });
-}
-
-// ============================
-// CATEGORY FILTER
-// ============================
-
-function filterProducts() {
-
-    const links = document.querySelectorAll(".sidebar ul li a");
-
-    links.forEach(link => {
-
-        link.addEventListener("click", function (e) {
-
-            e.preventDefault();
-
-            const category = this.textContent.replace(/[^a-zA-Z ]/g, "").trim();
-
-            const filtered = products.filter(p =>
-                p.category.toLowerCase() === category.toLowerCase()
-            );
-
-            displayProducts(filtered);
-        });
-    });
-}
-
-// ============================
-// INIT
-// ============================
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    displayProducts(displayedProducts);
-
-    liveSearch();
-
-    filterProducts();
-
-});
