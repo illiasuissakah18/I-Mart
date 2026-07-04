@@ -6,7 +6,7 @@ Version: 4.0
 ==========================================
 */
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://illiasu-imart-api.onrender.com";
 
 const productForm = document.getElementById("productForm");
 

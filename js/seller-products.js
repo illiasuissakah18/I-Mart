@@ -1,6 +1,6 @@
 const productsContainer = document.getElementById("productsContainer");
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://illiasu-imart-api.onrender.com/api/products";
 
 // Load all products
 async function loadProducts() {

@@ -141,7 +141,7 @@ async function paySubscription() {
         }
 
         const response = await fetch(
-            "http://localhost:5000/api/subscription/initialize",
+            "https://illiasu-imart-api.onrender.com/api/subscription/initialize",
             {
                 method: "POST",
                 headers: {
