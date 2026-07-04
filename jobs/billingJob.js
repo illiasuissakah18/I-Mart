@@ -1,52 +1,54 @@
 /*
 ==========================================
 I MART Marketplace
-Automatic Seller Billing Checker
+Monthly Billing Job
+Version: 1.0
 ==========================================
 */
 
 const cron = require("node-cron");
 const Seller = require("../models/Seller");
 
-// Runs every day at 12:00 AM
+// Run every day at midnight
 cron.schedule("0 0 * * *", async () => {
-
-    console.log("Checking seller subscriptions...");
 
     try {
 
-        const today = new Date();
+        console.log("🔄 Running Monthly Billing Job...");
 
         const sellers = await Seller.find();
 
+        const today = new Date();
+
         for (const seller of sellers) {
 
-            if (today > seller.nextBillingDate) {
+            if (!seller.nextBillingDate) continue;
+
+            if (today >= seller.nextBillingDate) {
+
+                seller.subscriptionStatus = "Inactive";
 
                 seller.billingStatus = "Unpaid";
 
-                const suspensionDate = new Date(seller.nextBillingDate);
+                const nextDate = new Date(today);
+                nextDate.setMonth(nextDate.getMonth() + 1);
 
-                suspensionDate.setDate(
-                    suspensionDate.getDate() +
-                    seller.gracePeriodDays
-                );
-
-                if (today >= suspensionDate) {
-                    seller.status = "Suspended";
-                }
+                seller.nextBillingDate = nextDate;
 
                 await seller.save();
+
+                console.log(`Seller ${seller.shopName} marked as unpaid.`);
+
             }
 
         }
 
-        console.log("Seller billing check completed.");
+    } catch (error) {
 
-    } catch (err) {
-
-        console.log(err);
+        console.error("❌ Billing Job Error:", error.message);
 
     }
 
 });
+
+module.exports = {};

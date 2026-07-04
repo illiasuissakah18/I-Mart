@@ -21,7 +21,16 @@ const app = express();
 connectDatabase();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: [
+        "https://illiasuissakah18.github.io",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: false
+}));
+
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
