@@ -36,6 +36,7 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/sellers", sellerRoutes);
 app.use("/api/subscription", subscriptionRoutes);
+app.use("/api/orders", orderRoutes);
 
 const PORT = process.env.PORT || 5000;
 
@@ -46,3 +47,5 @@ app.listen(PORT, () => {
 const cartRoutes = require("./routes/cart");
 
 app.use("/api/cart", cartRoutes);
+
+const orderRoutes = require("./routes/order");

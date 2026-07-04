@@ -1,159 +1,113 @@
 /*
 ==========================================
 I MART Marketplace
-routes/payment.js
-Version: CLEAN FIXED
+Paystack Payment
+Version: 1.0
 ==========================================
 */
 
-const express = require("express");
-const axios = require("axios");
+const API = "https://illiasu-imart-api.onrender.com";
 
-const router = express.Router();
+const order = JSON.parse(localStorage.getItem("checkoutOrder"));
 
-// ======================================
-// INITIATE PAYMENT
-// ======================================
+if (!order) {
 
-router.post("/pay", async (req, res) => {
+    alert("No order found.");
 
-    const {
+    window.location.href = "checkout.html";
 
-        customerName,
-        phone,
-        amount,
-        description
+}
 
-    } = req.body;
+document.getElementById("paymentTotal").textContent =
+    `GH₵${order.total.toFixed(2)}`;
 
-    try {
+document.getElementById("payBtn").addEventListener("click", payNow);
 
-        // ===============================
-        // HUBTEL PAYMENT REQUEST (SANDBOX)
-        // ===============================
+function payNow() {
 
-        const paymentData = {
+    let handler = PaystackPop.setup({
 
-            totalAmount: amount,
+        // Replace later with your LIVE PUBLIC KEY
+        key: "pk_test_xxxxxxxxxxxxxxxxxxxxxxxxx",
 
-            description: description || "I MART Purchase",
+        email: order.customer.email,
 
-            callbackUrl: process.env.CALLBACK_URL,
+        amount: order.total * 100,
 
-            returnUrl: "http://localhost:5500/order-success.html",
+        currency: "GHS",
 
-            cancellationUrl: "http://localhost:5500/checkout.html",
+        ref: "IMART_" + Date.now(),
 
-            merchantAccountNumber:
-                process.env.HUBTEL_MERCHANT_ACCOUNT,
+        metadata: {
 
-            clientReference:
-                "IM" + Date.now(),
+            customer_name: order.customer.fullName,
 
-            customerName: customerName,
+            phone: order.customer.phone
 
-            customerMsisdn: phone
+        },
 
-        };
+        callback: async function(response) {
 
-        // ===============================
-        // SEND REQUEST TO HUBTEL
-        // ===============================
+            try {
 
-        const response = await axios.post(
+                const res = await fetch(
+                    `${API}/api/payment/verify`,
+                    {
 
-            `${process.env.HUBTEL_BASE_URL}/items/initiate`,
+                        method: "POST",
 
-            paymentData,
+                        headers: {
+                            "Content-Type":"application/json"
+                        },
 
-            {
+                        body: JSON.stringify({
 
-                auth: {
+                            reference: response.reference,
 
-                    username:
-                        process.env.HUBTEL_CLIENT_ID,
+                            order
 
-                    password:
-                        process.env.HUBTEL_CLIENT_SECRET
+                        })
 
-                },
+                    }
 
-                headers: {
+                );
 
-                    "Content-Type": "application/json"
+                const data = await res.json();
+
+                if(data.success){
+
+                    localStorage.removeItem("cart");
+                    localStorage.removeItem("checkoutOrder");
+                    localStorage.removeItem("cartCount");
+
+                    alert("Payment Successful!");
+
+                    window.location.href="success.html";
+
+                }else{
+
+                    alert(data.message);
 
                 }
 
+            } catch(error){
+
+                console.error(error);
+
+                alert("Server Error.");
+
             }
 
-        );
+        },
 
-        // ===============================
-        // RETURN RESPONSE TO FRONTEND
-        // ===============================
+        onClose:function(){
 
-        res.json({
+            alert("Payment cancelled.");
 
-            success: true,
-
-            payment: response.data
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Payment Error:",
-            error.response?.data || error.message
-        );
-
-        res.status(500).json({
-
-            success: false,
-
-            message: "Payment initialization failed"
-
-        });
-
-    }
-
-});
-
-// ======================================
-// CALLBACK (HUBTEL NOTIFICATION)
-// ======================================
-
-router.post("/callback", (req, res) => {
-
-    console.log(
-        "Payment Callback Received:",
-        req.body
-    );
-
-    // Later we will:
-    // ✔ verify payment
-    // ✔ update order status
-    // ✔ notify seller
-
-    res.sendStatus(200);
-});
-
-// ======================================
-// STATUS CHECK
-// ======================================
-
-router.get("/status/:reference", (req, res) => {
-
-    res.json({
-
-        success: true,
-
-        reference: req.params.reference,
-
-        status: "Pending"
+        }
 
     });
 
-});
+    handler.openIframe();
 
-module.exports = router;
+}

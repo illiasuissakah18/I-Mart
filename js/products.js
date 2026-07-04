@@ -59,8 +59,8 @@ function renderProducts(products) {
                 <div class="product-buttons">
 
                     <a href="product-details.html?id=${product._id}" class="btn">
-                        View
-                    </a>
+    View
+</a>
 
                     <button class="btn wishlist-btn" onclick="addToWishlist('${product._id}')">
                         ❤
