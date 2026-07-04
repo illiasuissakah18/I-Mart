@@ -2,7 +2,7 @@
 ==========================================
 I MART Marketplace
 Product Routes
-Version: 2.0 (Image Upload Enabled)
+Version: 3.0
 ==========================================
 */
 
@@ -16,14 +16,26 @@ const {
     addProduct,
     getProducts,
     getSingleProduct,
+    getSellerProducts,
     updateProduct,
     deleteProduct
 } = require("../controllers/productController");
 
+// ==========================================
+// PUBLIC ROUTES
+// ==========================================
 
-// ===============================
-// ADD PRODUCT (WITH IMAGE UPLOAD)
-// ===============================
+// Get all marketplace products
+router.get("/", getProducts);
+
+// Get single product
+router.get("/:id", getSingleProduct);
+
+// ==========================================
+// SELLER ROUTES
+// ==========================================
+
+// Add product
 router.post(
     "/add",
     auth,
@@ -31,29 +43,26 @@ router.post(
     addProduct
 );
 
+// Get logged-in seller products
+router.get(
+    "/seller/my-products",
+    auth,
+    getSellerProducts
+);
 
-// ===============================
-// GET ALL PRODUCTS
-// ===============================
-router.get("/", getProducts);
+// Update product
+router.put(
+    "/:id",
+    auth,
+    upload.single("image"),
+    updateProduct
+);
 
-
-// ===============================
-// GET SINGLE PRODUCT
-// ===============================
-router.get("/:id", getSingleProduct);
-
-
-// ===============================
-// UPDATE PRODUCT (OPTIONAL AUTH)
-// ===============================
-router.put("/:id", auth, updateProduct);
-
-
-// ===============================
-// DELETE PRODUCT (PROTECTED)
-// ===============================
-router.delete("/:id", auth, deleteProduct);
-
+// Delete product
+router.delete(
+    "/:id",
+    auth,
+    deleteProduct
+);
 
 module.exports = router;

@@ -1,32 +1,78 @@
+/*
+==========================================
+I MART Marketplace
+Seller Products
+Version 3.0
+==========================================
+*/
+
+const API = "https://illiasu-imart-api.onrender.com/api/products";
+
 const productsContainer = document.getElementById("productsContainer");
 
-const API_URL = "https://illiasu-imart-api.onrender.com/api/products";
+// ===============================
+// LOAD SELLER PRODUCTS
+// ===============================
 
-// Load all products
 async function loadProducts() {
+
+    const token = localStorage.getItem("sellerToken");
+
+    if (!token) {
+
+        window.location.href = "seller-login.html";
+        return;
+
+    }
+
     try {
-        const response = await fetch(API_URL);
+
+        const response = await fetch(`${API}/seller/my-products`, {
+
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+
+        });
+
         const data = await response.json();
 
         if (!data.success) {
-            productsContainer.innerHTML = "<p>Failed to load products.</p>";
+
+            productsContainer.innerHTML =
+                "<p>No products found.</p>";
+
             return;
+
         }
 
         if (data.products.length === 0) {
-            productsContainer.innerHTML = "<p>No products available.</p>";
+
+            productsContainer.innerHTML = `
+                <div class="empty-products">
+                    <h3>No Products Yet</h3>
+                    <p>You haven't added any products.</p>
+
+                    <a href="add-product.html" class="btn">
+                        ➕ Add Your First Product
+                    </a>
+                </div>
+            `;
+
             return;
+
         }
 
         productsContainer.innerHTML = "";
 
         data.products.forEach(product => {
 
-            const card = document.createElement("div");
-            card.className = "product-card";
+            productsContainer.innerHTML += `
 
-            card.innerHTML = `
-                <img src="${product.image}" alt="${product.name}">
+            <div class="product-card">
+
+                <img src="https://illiasu-imart-api.onrender.com${product.image}"
+                     alt="${product.name}">
 
                 <div class="product-info">
 
@@ -42,40 +88,65 @@ async function loadProducts() {
 
                     <div class="actions">
 
-                        <button class="edit" onclick="editProduct('${product._id}')">
+                        <button
+                            class="edit"
+                            onclick="editProduct('${product._id}')">
+
                             ✏️ Edit
+
                         </button>
 
-                        <button class="delete" onclick="deleteProduct('${product._id}')">
+                        <button
+                            class="delete"
+                            onclick="deleteProduct('${product._id}')">
+
                             🗑️ Delete
+
                         </button>
 
                     </div>
 
                 </div>
-            `;
 
-            productsContainer.appendChild(card);
+            </div>
+
+            `;
 
         });
 
     } catch (error) {
+
         console.error(error);
-        productsContainer.innerHTML = "<p>Server Error.</p>";
+
+        productsContainer.innerHTML =
+            "<p>Unable to load products.</p>";
+
     }
+
 }
 
-// Delete product
+// ===============================
+// DELETE PRODUCT
+// ===============================
+
 async function deleteProduct(id) {
 
-    const confirmDelete = confirm("Are you sure you want to delete this product?");
+    if (!confirm("Delete this product?")) return;
 
-    if (!confirmDelete) return;
+    const token = localStorage.getItem("sellerToken");
 
     try {
 
-        const response = await fetch(`${API_URL}/${id}`, {
-            method: "DELETE"
+        const response = await fetch(`${API}/${id}`, {
+
+            method: "DELETE",
+
+            headers: {
+
+                Authorization: `Bearer ${token}`
+
+            }
+
         });
 
         const data = await response.json();
@@ -96,18 +167,25 @@ async function deleteProduct(id) {
 
         console.error(error);
 
-        alert("❌ Failed to delete product.");
+        alert("Server error.");
 
     }
 
 }
 
-// Placeholder for Day 24
+// ===============================
+// EDIT PRODUCT
+// ===============================
+
 function editProduct(id) {
 
-    window.location.href = `edit-product.html?id=${id}`;
+    window.location.href =
+        `edit-product.html?id=${id}`;
 
 }
 
-// Load products when page opens
+// ===============================
+// START
+// ===============================
+
 loadProducts();
