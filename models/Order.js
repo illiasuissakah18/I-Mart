@@ -1,121 +1,47 @@
-/*
-==========================================
-I MART Marketplace
-Order Model
-Version: 1.0
-==========================================
-*/
-
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
 
-    customer: {
-
-        fullName: {
-            type: String,
-            required: true
-        },
-
-        email: {
-            type: String,
-            required: true
-        },
-
-        phone: {
-            type: String,
-            required: true
-        },
-
-        city: {
-            type: String,
-            required: true
-        },
-
-        address: {
-            type: String,
-            required: true
-        }
-
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     },
 
-    products: [
-
+    items: [
         {
-
-            productId: {
+            product: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Product"
             },
-
+            quantity: Number,
+            price: Number,
             seller: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Seller"
-            },
-
-            name: String,
-
-            image: String,
-
-            quantity: Number,
-
-            price: Number
-
+            }
         }
-
     ],
 
-    total: {
-
+    totalAmount: {
         type: Number,
         required: true
-
-    },
-
-    paymentReference: {
-
-        type: String,
-        required: true,
-        unique: true
-
     },
 
     paymentStatus: {
-
         type: String,
-
-        enum: ["Pending", "Paid", "Failed"],
-
         default: "Pending"
-
     },
 
-    orderStatus: {
-
+    status: {
         type: String,
+        default: "Pending"
+    },
 
-        enum: [
-
-            "Processing",
-
-            "Confirmed",
-
-            "Shipped",
-
-            "Delivered",
-
-            "Cancelled"
-
-        ],
-
-        default: "Processing"
-
-    }
+    paymentReference: String
 
 }, {
-
     timestamps: true
-
 });
 
 module.exports = mongoose.model("Order", orderSchema);

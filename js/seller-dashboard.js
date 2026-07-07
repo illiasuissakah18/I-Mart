@@ -2,58 +2,46 @@
 ==========================================
 I MART Marketplace
 Seller Dashboard
-Version 5.0
+Version 6.0
+Production Ready
 ==========================================
 */
 
 const API = "https://illiasu-imart-api.onrender.com";
 
 // ===============================
-// LOAD DASHBOARD
+// INITIALIZE
 // ===============================
-
 document.addEventListener("DOMContentLoaded", () => {
-
     loadDashboard();
-
 });
 
 // ===============================
-// LOAD SELLER DATA
+// LOAD SELLER DASHBOARD
 // ===============================
-
 async function loadDashboard() {
 
     const token = localStorage.getItem("sellerToken");
 
     if (!token) {
-
         window.location.href = "seller-login.html";
         return;
-
     }
 
     try {
 
         const response = await fetch(`${API}/api/sellers/profile`, {
-
             method: "GET",
-
             headers: {
-
                 Authorization: `Bearer ${token}`
-
             }
-
         });
 
         const data = await response.json();
 
-        if (!response.ok) {
-
+        if (!response.ok || !data.success) {
             logoutSeller();
             return;
-
         }
 
         const seller = data.seller;
@@ -62,62 +50,54 @@ async function loadDashboard() {
         localStorage.setItem("seller", JSON.stringify(seller));
 
         // ===============================
+        // HELPER FUNCTION
+        // ===============================
+        function setText(id, value) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+            }
+        }
+
+        // ===============================
         // BASIC DETAILS
         // ===============================
-
-        document.getElementById("seller-name").textContent =
-            seller.fullName;
-
-        document.getElementById("shop-name").textContent =
-            seller.shopName;
-
-        document.getElementById("seller-email").textContent =
-            seller.email;
+        setText("seller-name", seller.fullName);
+        setText("shop-name", seller.shopName);
+        setText("seller-email", seller.email);
 
         // ===============================
         // PROFILE
         // ===============================
-
-        document.getElementById("shopName").textContent =
-            seller.shopName;
-
-        document.getElementById("sellerEmail").textContent =
-            seller.email;
-
-        document.getElementById("sellerStatus").textContent =
-            seller.status;
-
-        document.getElementById("subscriptionPlan").textContent =
-            seller.subscription;
+        setText("shopName", seller.shopName);
+        setText("sellerEmail", seller.email);
+        setText("sellerStatus", seller.status);
+        setText("subscriptionPlan", seller.subscription);
 
         // ===============================
         // BILLING
         // ===============================
+        setText(
+            "monthlyFee",
+            "GH₵" + Number(seller.monthlyFee || 0).toFixed(2)
+        );
 
-        document.getElementById("monthlyFee").textContent =
-            "GH₵" + seller.monthlyFee.toFixed(2);
-
-        document.getElementById("billingStatus").textContent =
-            seller.billingStatus;
-
-        document.getElementById("accountStatus").textContent =
-            seller.status;
-
-        document.getElementById("subscriptionStatus").textContent =
-            seller.subscription;
+        setText("billingStatus", seller.billingStatus);
+        setText("accountStatus", seller.status);
+        setText("subscriptionStatus", seller.subscription);
 
         if (seller.nextBillingDate) {
-
-            document.getElementById("nextBillingDate").textContent =
-                new Date(seller.nextBillingDate).toLocaleDateString();
-
+            setText(
+                "nextBillingDate",
+                new Date(seller.nextBillingDate).toLocaleDateString()
+            );
         }
 
     } catch (error) {
 
-        console.error(error);
+        console.error("Dashboard Error:", error);
 
-        alert("Unable to load seller dashboard.");
+        alert("Unable to connect to the server.");
 
     }
 
@@ -126,7 +106,6 @@ async function loadDashboard() {
 // ===============================
 // LOGOUT
 // ===============================
-
 function logoutSeller() {
 
     localStorage.removeItem("sellerToken");

@@ -1,85 +1,99 @@
-/*
-==========================================
-I MART Marketplace
-Cart Controller
-Version: 1.0
-==========================================
-*/
-
 const Cart = require("../models/Cart");
+const Product = require("../models/Product");
+
 
 // ===============================
 // ADD PRODUCT TO CART
 // ===============================
 exports.addToCart = async (req, res) => {
+
     try {
+
+        const userId = req.user.userId;
+
         const { productId, quantity } = req.body;
 
-        const userId = req.seller._id;
 
-        let cartItem = await Cart.findOne({
-            userId,
-            productId
-        });
+        const product = await Product.findById(productId);
 
-        if (cartItem) {
-            cartItem.quantity += quantity || 1;
-            await cartItem.save();
-
-            return res.status(200).json({
-                success: true,
-                message: "Cart updated successfully.",
-                cartItem
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found"
             });
         }
 
-        cartItem = await Cart.create({
-            userId,
-            productId,
-            quantity: quantity || 1
+
+        let cart = await Cart.findOne({
+            user: userId
         });
 
-        res.status(201).json({
-            success: true,
-            message: "Product added to cart.",
-            cartItem
-        });
 
-    } catch (error) {
-        console.error(error);
+        if (!cart) {
 
-        res.status(500).json({
-            success: false,
-            message: "Server error."
-        });
-    }
-};
+            cart = await Cart.create({
+
+                user: userId,
+
+                items: [
+                    {
+                        product: productId,
+                        quantity: quantity || 1
+                    }
+                ]
+
+            });
+
+        } else {
 
 
-// ===============================
-// GET USER CART
-// ===============================
-exports.getCart = async (req, res) => {
+            const existingItem = cart.items.find(
 
-    try {
+                item =>
+                item.product.toString() === productId
 
-        const userId = req.seller._id;
+            );
 
-        const cart = await Cart.find({ userId })
-            .populate("productId");
+
+            if (existingItem) {
+
+                existingItem.quantity += quantity || 1;
+
+            } else {
+
+                cart.items.push({
+
+                    product: productId,
+                    quantity: quantity || 1
+
+                });
+
+            }
+
+
+            await cart.save();
+
+        }
+
 
         res.status(200).json({
+
             success: true,
+            message: "Product added to cart",
             cart
+
         });
+
 
     } catch (error) {
 
         console.error(error);
 
         res.status(500).json({
-            success: false,
-            message: "Server error."
+
+            success:false,
+            message:"Cart error"
+
         });
 
     }
@@ -87,27 +101,85 @@ exports.getCart = async (req, res) => {
 };
 
 
+
 // ===============================
-// REMOVE ITEM FROM CART
+// GET CUSTOMER CART
 // ===============================
-exports.removeFromCart = async (req, res) => {
+exports.getCart = async (req,res)=>{
 
-    try {
+    try{
 
-        await Cart.findByIdAndDelete(req.params.id);
+        const cart = await Cart.findOne({
 
-        res.status(200).json({
-            success: true,
-            message: "Item removed from cart."
+            user:req.user.userId
+
+        }).populate("items.product");
+
+
+        res.json({
+
+            success:true,
+            cart
+
         });
 
-    } catch (error) {
 
-        console.error(error);
+    }catch(error){
 
         res.status(500).json({
-            success: false,
-            message: "Server error."
+
+            success:false,
+            message:error.message
+
+        });
+
+    }
+
+};
+
+
+
+// ===============================
+// REMOVE FROM CART
+// ===============================
+exports.removeFromCart = async(req,res)=>{
+
+    try{
+
+        const cart = await Cart.findOne({
+
+            user:req.user.userId
+
+        });
+
+
+        cart.items = cart.items.filter(
+
+            item =>
+            item.product.toString() !== req.params.id
+
+        );
+
+
+        await cart.save();
+
+
+        res.json({
+
+            success:true,
+            message:"Product removed",
+            cart
+
+        });
+
+
+    }catch(error){
+
+        res.status(500).json({
+
+            success:false,
+            message:error.message
+
         });
 
     }

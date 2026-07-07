@@ -1,6 +1,25 @@
+/*
+==========================================
+I MART Marketplace
+Seller Controller
+Version 6.0
+==========================================
+*/
+
 const Seller = require("../models/Seller");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+// ===============================
+// GENERATE JWT TOKEN
+// ===============================
+const generateToken = (sellerId) => {
+    return jwt.sign(
+        { sellerId },
+        process.env.JWT_SECRET,
+        { expiresIn: "30d" }
+    );
+};
 
 // ===============================
 // REGISTER SELLER
@@ -17,7 +36,21 @@ exports.registerSeller = async (req, res) => {
             password
         } = req.body;
 
-        // Check if email already exists
+        // Validate required fields
+        if (
+            !fullName ||
+            !shopName ||
+            !email ||
+            !phone ||
+            !password
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Please fill in all fields."
+            });
+        }
+
+        // Check existing seller
         const existingSeller = await Seller.findOne({ email });
 
         if (existingSeller) {
@@ -27,22 +60,28 @@ exports.registerSeller = async (req, res) => {
             });
         }
 
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
         // Create seller
         const seller = await Seller.create({
             fullName,
             shopName,
             email,
             phone,
-            password: hashedPassword
+            password
         });
 
         res.status(201).json({
             success: true,
             message: "Seller registered successfully.",
-            seller
+            token: generateToken(seller._id),
+            seller: {
+                id: seller._id,
+                fullName: seller.fullName,
+                shopName: seller.shopName,
+                email: seller.email,
+                phone: seller.phone,
+                subscription: seller.subscription,
+                status: seller.status
+            }
         });
 
     } catch (error) {
@@ -51,7 +90,7 @@ exports.registerSeller = async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Server Error."
         });
 
     }
@@ -67,46 +106,43 @@ exports.loginSeller = async (req, res) => {
 
         const { email, password } = req.body;
 
-        const seller = await Seller.findOne({ email });
+        const seller = await Seller
+            .findOne({ email })
+            .select("+password");
 
         if (!seller) {
-            return res.status(400).json({
+            return res.status(401).json({
                 success: false,
                 message: "Invalid email or password."
             });
         }
 
-        const isMatch = await bcrypt.compare(password, seller.password);
+        const match = await bcrypt.compare(
+            password,
+            seller.password
+        );
 
-        if (!isMatch) {
-            return res.status(400).json({
+        if (!match) {
+            return res.status(401).json({
                 success: false,
                 message: "Invalid email or password."
             });
         }
 
-        const token = jwt.sign(
-    {
-        _id: seller._id,
-        email: seller.email,
-        shopName: seller.shopName,
-        role: "seller"
-    },
-    process.env.JWT_SECRET || "imart_secret_key",
-    {
-        expiresIn: "7d"
-    }
-);
-
-        res.status(200).json({
+        res.json({
             success: true,
-            message: "Login successful.",
-            token,
+            token: generateToken(seller._id),
             seller: {
                 id: seller._id,
                 fullName: seller.fullName,
                 shopName: seller.shopName,
-                email: seller.email
+                email: seller.email,
+                phone: seller.phone,
+                subscription: seller.subscription,
+                status: seller.status,
+                monthlyFee: seller.monthlyFee,
+                billingStatus: seller.billingStatus,
+                nextBillingDate: seller.nextBillingDate
             }
         });
 
@@ -116,22 +152,21 @@ exports.loginSeller = async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Server Error."
         });
 
     }
 
 };
-// ===============================
-// GET CURRENT SELLER
-// ===============================
 
+// ===============================
+// GET SELLER PROFILE
+// ===============================
 exports.getSellerProfile = async (req, res) => {
 
     try {
 
-        const seller = await Seller.findById(req.seller._id)
-            .select("-password");
+        const seller = await Seller.findById(req.seller.sellerId);
 
         if (!seller) {
             return res.status(404).json({
@@ -140,16 +175,18 @@ exports.getSellerProfile = async (req, res) => {
             });
         }
 
-        res.status(200).json({
+        res.json({
             success: true,
             seller
         });
 
     } catch (error) {
 
+        console.error(error);
+
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Server Error."
         });
 
     }

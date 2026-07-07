@@ -1,3 +1,6 @@
+const dns = require("dns");
+
+dns.setDefaultResultOrder("ipv4first");
 require("dotenv").config();
 
 const express = require("express");
@@ -7,20 +10,16 @@ require("./jobs/billingJob");
 
 const connectDatabase = require("./config/database");
 
-// Routes
-const paymentRoutes = require("./routes/payment");
-const productRoutes = require("./routes/product");
-const sellerRoutes = require("./routes/seller");
-const subscriptionRoutes = require("./routes/subscriptionRoutes");
-const cartRoutes = require("./routes/cart");
-const orderRoutes = require("./routes/order");
-
 const app = express();
 
-// Connect Database
+// ===============================
+// DATABASE CONNECTION
+// ===============================
 connectDatabase();
 
-// Middleware
+// ===============================
+// MIDDLEWARE
+// ===============================
 app.use(cors({
     origin: [
         "https://illiasuissakah18.github.io",
@@ -32,22 +31,55 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Static files (product images)
 app.use("/uploads", express.static("uploads"));
 
-// Home Route
+// ===============================
+// ROUTES
+// ===============================
+const paymentRoutes = require("./routes/payment");
+const productRoutes = require("./routes/product");
+const sellerRoutes = require("./routes/seller");
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
+const cartRoutes = require("./routes/cart");
+const orderRoutes = require("./routes/order");
+const checkoutRoutes = require("./routes/checkoutRoutes");
+const userRoutes = require("./routes/user");
+
+// ===============================
+// HOME ROUTE
+// ===============================
 app.get("/", (req, res) => {
-    res.send("I MART Server is Running 🚀");
+    res.send("🚀 I MART Server is Running Successfully");
 });
 
-// API Routes
+// ===============================
+// API ROUTE MIDDLEWARE
+// ===============================
 app.use("/api/payment", paymentRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/sellers", sellerRoutes);
 app.use("/api/subscription", subscriptionRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/checkout", checkoutRoutes);
+app.use("/api/users", userRoutes);
 
-// Start Server
+// ===============================
+// ERROR HANDLING (optional but good)
+// ===============================
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "Route not found"
+    });
+});
+
+// ===============================
+// START SERVER
+// ===============================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
