@@ -8,7 +8,7 @@ Version: 3.0
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-const API = "https://illiasu-imart-api.onrender.com";
+const API = "https://i-mart-illiasu.onrender.com";
 
 const cartContainer = document.getElementById("cartItems");
 const totalElement = document.getElementById("cartTotal");

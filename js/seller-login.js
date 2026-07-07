@@ -11,7 +11,7 @@ form.addEventListener("submit", async (e) => {
 
     try {
 
-        const response = await fetch("https://illiasu-imart-api.onrender.com/api/sellers/login", {
+        const response = await fetch("https://i-mart-illiasu.onrender.com/api/sellers/login", {
 
             method: "POST",
 
