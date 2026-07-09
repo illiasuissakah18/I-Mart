@@ -65,27 +65,21 @@ exports.getProducts = async (req, res) => {
 
     try {
 
-        const products = await Product.find()
-            .populate("seller", "shopName fullName")
-            .sort({ createdAt: -1 });
+        const products = await Product.find();
 
         res.status(200).json({
-
             success: true,
             count: products.length,
             products
-
         });
 
     } catch (error) {
 
-        console.error("❌ Get Products Error:", error);
+        console.error("GET PRODUCTS ERROR:", error);
 
         res.status(500).json({
-
             success: false,
             message: error.message
-
         });
 
     }
