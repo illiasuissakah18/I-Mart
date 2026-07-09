@@ -10,7 +10,7 @@ Version: 1.0 CLEAN
 // API URL (YOUR BACKEND)
 // ===============================
 
-const API_URL = "http://localhost:5000/api/payment";
+const API_URL = "https://i-mart-backend.onrender.com/api/payment";
 
 // ===============================
 // START PAYMENT

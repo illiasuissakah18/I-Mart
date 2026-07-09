@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://i-mart-backend.onrender.com/api/products";
 
 // Get product ID from URL
 const params = new URLSearchParams(window.location.search);

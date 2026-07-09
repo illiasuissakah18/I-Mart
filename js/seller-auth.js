@@ -6,7 +6,7 @@ MongoDB + JWT Version 2.0
 ==========================================
 */
 
-const API_URL = "http://localhost:5000/api/sellers";
+const API_URL = "https://i-mart-backend.onrender.com/api/sellers";
 
 /* ==========================
    REGISTER SELLER
