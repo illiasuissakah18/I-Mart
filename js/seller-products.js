@@ -6,7 +6,7 @@ Version 3.0
 ==========================================
 */
 
-const API = "https://illiasu-imart-api.onrender.com/api/products";
+const API = "https://i-mart-backend.onrender.com/api/products";
 
 const productsContainer = document.getElementById("productsContainer");
 
@@ -71,7 +71,7 @@ async function loadProducts() {
 
             <div class="product-card">
 
-                <img src="https://illiasu-imart-api.onrender.com${product.image}"
+                <img src="https://i-mart-backend.onrender.com${product.image}"
                      alt="${product.name}">
 
                 <div class="product-info">

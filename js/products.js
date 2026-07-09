@@ -1,4 +1,4 @@
-const API_URL = "https://illiasu-imart-api.onrender.com/api/products";
+const API_URL = "https://i-mart-backend.onrender.com/api/products";
 
 document.addEventListener("DOMContentLoaded", () => {
     loadProducts();
@@ -38,7 +38,7 @@ function renderProducts(products) {
     products.forEach(product => {
 
         const imageURL = product.image
-    ? `https://illiasu-imart-api.onrender.com${product.image}`
+    ? `https://i-mart-backend.onrender.com${product.image}`
     : "images/default-product.png";
 
         const card = document.createElement("div");

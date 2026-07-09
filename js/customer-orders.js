@@ -6,7 +6,7 @@ Version: 1.0
 ==========================================
 */
 
-const API = "https://illiasu-imart-api.onrender.com";
+const API = "https://i-mart-backend.onrender.com/api/orders";
 
 const ordersList = document.getElementById("ordersList");
 

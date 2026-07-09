@@ -6,7 +6,7 @@ Version: 1.0
 ==========================================
 */
 
-const API_URL = "https://illiasu-imart-api.onrender.com/api/products";
+const API_URL = "https://i-mart-backend.onrender.com/api/products";
 
 // Get Product ID from URL
 const params = new URLSearchParams(window.location.search);
@@ -41,7 +41,7 @@ async function loadProduct() {
         const product = data.product;
 
         document.getElementById("productImage").src =
-            "https://illiasu-imart-api.onrender.com" + product.image;
+            "https://i-mart-backend.onrender.com" + product.image;
 
         document.getElementById("productName").textContent =
             product.name;

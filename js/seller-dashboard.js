@@ -1,4 +1,4 @@
-const API = "https://illiasu-imart-api.onrender.com";
+const API = "https://i-mart-backend.onrender.com/api/products";
 
 const token = localStorage.getItem("sellerToken");
 
