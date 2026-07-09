@@ -1,6 +1,7 @@
-const API = "https://i-mart-backend.onrender.com/api/products";
+const API = "https://i-mart-backend.onrender.com";
 
 const token = localStorage.getItem("sellerToken");
+
 
 async function loadDashboard(){
 
@@ -9,10 +10,11 @@ async function loadDashboard(){
         return;
     }
 
+
     try{
 
         const response = await fetch(
-            `${API}/api/products/seller/my-products`,
+            `${API}/api/sellers/profile`,
             {
                 headers:{
                     Authorization:`Bearer ${token}`
@@ -20,25 +22,36 @@ async function loadDashboard(){
             }
         );
 
+
         const data = await response.json();
 
-        console.log(data);
 
         if(data.success){
 
-            document.getElementById("productCount").textContent =
-            data.count;
+            document.getElementById("seller-name").textContent =
+            data.seller.fullName;
 
-            displayProducts(data.products);
+
+            document.getElementById("shop-name").textContent =
+            data.seller.shopName;
+
+
+            document.getElementById("seller-email").textContent =
+            data.seller.email;
 
         }
 
+
     }catch(error){
 
-        console.error("Dashboard Error:", error);
+        console.error(
+            "Dashboard Error:",
+            error
+        );
 
     }
 
 }
+
 
 loadDashboard();
