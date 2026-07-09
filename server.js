@@ -23,8 +23,8 @@ connectDatabase();
 app.use(cors({
     origin: [
         "https://illiasuissakah18.github.io",
-        "http://localhost:5500",
-        "http://127.0.0.1:5500"
+        "https://i-mart-backend.onrender.com",
+        "https://i-mart-backend.onrender.com"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: false
