@@ -2,14 +2,14 @@
 // I MART Products Data
 // ===============================
 
-const API_URL = "https://illiasu-imart-api.onrender.com/api/products";
+const PRODUCTS_API_URL = "https://i-mart-backend.onrender.com/api/products";
 
 let products = [];
 
 // Load all products
 async function loadProducts() {
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(PRODUCTS_API_URL)
 
         if (!response.ok) {
             throw new Error("Failed to load products");
