@@ -38,8 +38,8 @@ function renderProducts(products) {
     products.forEach(product => {
 
         const imageURL = product.image
-            ? "https://i-mart-illiasu.onrender.com/uploads/${product.image}"
-            : "images/default-product.png";
+    ? `https://illiasu-imart-api.onrender.com${product.image}`
+    : "images/default-product.png";
 
         const card = document.createElement("div");
         card.classList.add("product-card");

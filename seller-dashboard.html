@@ -224,14 +224,22 @@ if (typeof loadDashboard === "function") {
     loadDashboard();
 }
 
-async function paySubscription() {
+
+function paySubscription() {
 
     alert("Paystack integration will be connected in the next update.");
+
+}
+
+
+function logoutSeller(){
+
+    localStorage.removeItem("sellerToken");
+    window.location.href = "seller-login.html";
 
 }
 
 </script>
 
 </body>
-
 </html>
