@@ -33,6 +33,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Test API Route
+app.get("/", (req, res) => {
+    res.json({
+        success: true,
+        message: "I MART Backend is running 🚀"
+    });
+});
+
 // Static files (product images)
 app.use("/uploads", express.static("uploads"));
 
