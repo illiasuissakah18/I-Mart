@@ -17,42 +17,33 @@
 <body>
 
 
-<!-- ================= HEADER ================= -->
-
 <header class="header">
 
-    <div class="logo">
-
-        <a href="index.html">
-
-            <img src="images/logo.png" alt="I MART Logo">
-
-        </a>
-
-    </div>
+<div class="logo">
+<a href="index.html">
+<img src="images/logo.png" alt="I MART Logo">
+</a>
+</div>
 
 
-    <nav>
+<nav>
 
-        <a href="index.html">Home</a>
+<a href="index.html">Home</a>
 
-        <a href="products.html">Marketplace</a>
+<a href="products.html">Marketplace</a>
 
-        <a href="seller-products.html">My Products</a>
+<a href="seller-products.html">My Products</a>
 
-        <a href="seller-orders.html">Orders</a>
+<a href="seller-orders.html">Orders</a>
 
-        <a href="#" onclick="logoutSeller()">Logout</a>
+<a href="#" onclick="logoutSeller()">Logout</a>
 
-    </nav>
+</nav>
 
 
 </header>
 
 
-
-
-<!-- ================= DASHBOARD ================= -->
 
 
 <section class="seller-dashboard">
@@ -69,10 +60,7 @@ Manage your store, products and orders from one dashboard.
 
 
 
-<!-- Seller Information -->
-
 <div class="dashboard-card">
-
 
 <p>
 <strong>Shop:</strong>
@@ -91,384 +79,44 @@ Manage your store, products and orders from one dashboard.
 
 
 
-
-<!-- Dashboard Cards -->
-
-
-<div class="dashboard-cards">
-
-
-<div class="dashboard-card">
-
-<h3>Total Products</h3>
-
-<h2 id="totalProducts">0</h2>
-
-</div>
-
-
-
-
-<div class="dashboard-card">
-
-<h3>Total Orders</h3>
-
-<h2 id="totalOrders">0</h2>
-
-</div>
-
-
-
-
-<div class="dashboard-card">
-
-<h3>Total Sales</h3>
-
-<h2 id="totalSales">
-GH₵0.00
-</h2>
-
-</div>
-
-
-
-
-<div class="dashboard-card">
-
-<h3>Subscription</h3>
-
-<h2 id="subscriptionStatus">
-Basic
-</h2>
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-<!-- QUICK ACTIONS -->
-
-
 <div class="dashboard-actions">
 
 
 <a href="seller-products.html" class="btn">
-
 📦 Manage Products
-
 </a>
-
 
 
 <a href="seller-orders.html" class="btn">
-
 🛒 View Orders
-
 </a>
-
 
 
 <a href="add-product.html" class="btn">
-
 ➕ Add Product
-
 </a>
-
-
 
 
 <a href="#" onclick="logoutSeller()" class="btn">
-
 🚪 Logout
-
 </a>
 
 
-
 </div>
 
 
 
-
-
-
-
-<!-- SALES -->
-
-
-<section class="dashboard-section">
-
-
-<h2>
-📊 Sales Overview
-</h2>
-
-
-<div class="overview-box">
-
-
-<p>
-Track your performance and monitor your store growth.
-</p>
-
-
-</div>
-
-
 </section>
 
 
 
-
-
-
-
-<!-- ORDERS -->
-
-
-<section class="dashboard-section">
-
-
-<h2>
-🛒 Recent Orders
-</h2>
-
-
-<div id="recentOrders">
-
-
-<p>
-No recent orders yet.
-</p>
-
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-
-
-<!-- PRODUCTS -->
-
-
-<section class="dashboard-section">
-
-
-<h2>
-⭐ Top Selling Products
-</h2>
-
-
-<div id="topProducts">
-
-
-<p>
-No product data yet.
-</p>
-
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-
-
-<!-- PROFILE -->
-
-
-<section class="dashboard-section profile-box">
-
-
-<h2>
-👤 Store Profile
-</h2>
-
-
-
-<p>
-<strong>Shop Name:</strong>
-
-<span id="shopName">
-Loading...
-</span>
-
-</p>
-
-
-
-<p>
-<strong>Email:</strong>
-
-<span id="sellerEmail">
-Loading...
-</span>
-
-</p>
-
-
-
-<p>
-<strong>Status:</strong>
-
-<span id="sellerStatus">
-Active
-</span>
-
-</p>
-
-
-
-
-<p>
-<strong>Subscription:</strong>
-
-<span id="subscriptionPlan">
-Basic
-</span>
-
-</p>
-
-
-
-</section>
-
-
-
-
-
-
-
-
-<!-- BILLING -->
-
-
-<section class="dashboard-section billing-box">
-
-
-<h2>
-💳 Monthly Subscription
-</h2>
-
-
-
-<p>
-
-<strong>
-Monthly Fee:
-</strong>
-
-<span id="monthlyFee">
-GH₵20.00
-</span>
-
-
-</p>
-
-
-
-
-<p>
-
-<strong>
-Billing Status:
-</strong>
-
-<span id="billingStatus">
-Paid
-</span>
-
-
-</p>
-
-
-
-
-<p>
-
-<strong>
-Next Billing Date:
-</strong>
-
-<span id="nextBillingDate">
-Loading...
-</span>
-
-
-</p>
-
-
-
-
-<p>
-
-<strong>
-Account Status:
-</strong>
-
-<span id="accountStatus">
-Active
-</span>
-
-
-</p>
-
-
-
-
-
-<button 
-id="paySubscriptionBtn"
-class="btn"
-onclick="paySubscription()">
-
-💳 Pay Monthly Subscription
-
-</button>
-
-
-
-</section>
-
-
-
-
-</section>
-
-
-
-
-
-
-<!-- FOOTER -->
 
 
 <footer class="footer">
 
-
 <p>
-
 © 2026 I MART Marketplace. All rights reserved.
-
 </p>
-
 
 </footer>
 
@@ -476,66 +124,28 @@ onclick="paySubscription()">
 
 
 
-
-
-<!-- JAVASCRIPT -->
-
-
 <script src="js/seller-auth.js"></script>
 
 <script src="js/seller-dashboard.js"></script>
 
 
-
-
 <script>
-
-
-if(typeof protectSellerDashboard === "function"){
-
-    protectSellerDashboard();
-
-}
-
-
-
-if(typeof loadDashboard === "function"){
-
-    loadDashboard();
-
-}
-
-
-
-
-
-function paySubscription(){
-
-    alert(
-        "Paystack integration will be connected in the next update."
-    );
-
-}
-
-
 
 
 function logoutSeller(){
 
+localStorage.removeItem("sellerToken");
 
-    localStorage.removeItem("sellerToken");
+localStorage.removeItem("currentSeller");
 
-    localStorage.removeItem("currentSeller");
-
-
-    window.location.href="seller-login.html";
-
+window.location.href="seller-login.html";
 
 }
 
 
-
 </script>
+
+
 
 </body>
 
