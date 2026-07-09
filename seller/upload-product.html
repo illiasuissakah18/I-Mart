@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>I MART - Upload Product</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<h2>Upload Product</h2>
+
+<form id="productForm" enctype="multipart/form-data">
+
+    <input 
+        type="text" 
+        id="name" 
+        placeholder="Product Name"
+        required
+    >
+
+    <textarea
+        id="description"
+        placeholder="Product Description"
+        required>
+    </textarea>
+
+
+    <input
+        type="number"
+        id="price"
+        placeholder="Price"
+        required
+    >
+
+
+    <input
+        type="text"
+        id="category"
+        placeholder="Category"
+        required
+    >
+
+
+    <input
+        type="number"
+        id="stock"
+        placeholder="Stock Quantity"
+        required
+    >
+
+
+    <input
+        type="file"
+        id="image"
+        accept="image/*"
+        required
+    >
+
+
+    <button type="submit">
+        Upload Product
+    </button>
+
+
+</form>
+
+
+<p id="message"></p>
+
+
+<script src="js/upload-product.js"></script>
+
+</body>
+</html>
