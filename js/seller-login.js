@@ -1,55 +1,140 @@
+/*
+==========================================
+I MART Marketplace
+Seller Login
+Version: 4.0
+==========================================
+*/
+
+const API_URL = "https://i-mart-backend.onrender.com";
+
 const form = document.getElementById("sellerLoginForm");
 
-form.addEventListener("submit", async (e) => {
+if (form) {
 
-    e.preventDefault();
+    form.addEventListener("submit", async (e) => {
 
-    const email = document.getElementById("sellerEmail").value.trim().toLowerCase();
-    const password = document.getElementById("sellerPassword").value;
+        e.preventDefault();
 
-    console.log("Logging in with:", email);
 
-    try {
+        const email = document
+            .getElementById("sellerEmail")
+            .value
+            .trim()
+            .toLowerCase();
 
-        const response = await fetch("https://i-mart-backend.onrender.com/api/sellers/login", {
 
-            method: "POST",
+        const password = document
+            .getElementById("sellerPassword")
+            .value;
 
-            headers: {
-                "Content-Type": "application/json"
-            },
 
-            body: JSON.stringify({
-                email,
-                password
-            })
+        if (!email || !password) {
 
-        });
-
-        const data = await response.json();
-
-        console.log("Server response:", data);
-
-        if (response.ok && data.success) {
-
-            localStorage.setItem("sellerToken", data.token);
-            localStorage.setItem("currentSeller", JSON.stringify(data.seller));
-
-            alert("✅ Login successful!");
-
-            window.location.href = "seller-dashboard.html";
-
-        } else {
-
-            alert(data.message || "Login failed.");
+            alert("Please enter email and password.");
+            return;
 
         }
 
-    } catch (error) {
 
-        console.error(error);
-        alert("Unable to connect to the server.");
+        const button = form.querySelector("button");
 
-    }
+        if (button) {
+            button.disabled = true;
+            button.textContent = "Logging in...";
+        }
 
-});
+
+        try {
+
+            const response = await fetch(
+                `${API_URL}/api/sellers/login`,
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        email,
+                        password
+
+                    })
+
+                }
+            );
+
+
+            const data = await response.json();
+
+
+            console.log("Login response:", data);
+
+
+            if (response.ok && data.success) {
+
+
+                localStorage.setItem(
+                    "sellerToken",
+                    data.token
+                );
+
+
+                localStorage.setItem(
+                    "currentSeller",
+                    JSON.stringify(data.seller)
+                );
+
+
+                alert("✅ Login successful!");
+
+
+                window.location.href =
+                    "seller-dashboard.html";
+
+
+            } else {
+
+
+                alert(
+                    data.message ||
+                    "Invalid email or password."
+                );
+
+
+            }
+
+
+        } catch (error) {
+
+
+            console.error(
+                "Login Error:",
+                error
+            );
+
+
+            alert(
+                "Unable to connect to I MART server."
+            );
+
+
+        } finally {
+
+
+            if (button) {
+
+                button.disabled = false;
+                button.textContent = "Login";
+
+            }
+
+
+        }
+
+    });
+
+}
