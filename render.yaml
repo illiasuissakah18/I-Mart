@@ -1,0 +1,19 @@
+# Render deployment manifest for I MART
+# After adding this file to GitHub, connect the repo in Render and configure secrets.
+
+services:
+  - type: web
+    name: i-mart-web
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    branch: main
+    autoDeploy: true
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+    disk: 1024
