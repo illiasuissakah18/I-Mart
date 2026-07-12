@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const auth = require("../middleware/sellerAuth");
+const userAuth = require("../middleware/userAuth");
 
 const {
     createOrder,
@@ -10,7 +11,7 @@ const {
 } = require("../controllers/orderController");
 
 // Customer places an order
-router.post("/", createOrder);
+router.post("/", userAuth, createOrder);
 
 // Seller views all orders
 router.get("/seller", auth, getSellerOrders);

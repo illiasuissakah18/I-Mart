@@ -28,9 +28,16 @@ module.exports = (req, res, next) => {
         const token = authHeader.split(" ")[1];
 
         // Verify token
+        if (!process.env.JWT_SECRET) {
+            return res.status(500).json({
+                success: false,
+                message: "Server misconfiguration: JWT secret missing."
+            });
+        }
+
         const decoded = jwt.verify(
             token,
-            process.env.JWT_SECRET || "imart_secret_key"
+            process.env.JWT_SECRET
         );
 
         // Save seller info to request

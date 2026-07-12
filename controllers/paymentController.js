@@ -1,3 +1,5 @@
+const { verifyPaystackSignature } = require("../utils/paystack");
+
 // ===============================
 // INITIALIZE PAYMENT
 // ===============================
@@ -7,7 +9,7 @@ exports.initializePayment = async (req, res) => {
         const { orderId } = req.body;
 
         // Find order
-        const order = await Order.findById(orderId);
+        const order = await Order.findById(orderId).populate("user", "email");
 
         if (!order) {
             return res.status(404).json({
@@ -16,9 +18,16 @@ exports.initializePayment = async (req, res) => {
             });
         }
 
+        if (order.user.toString() !== req.user.userId) {
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized to pay for this order"
+            });
+        }
+
         // Create Paystack payload
         const params = {
-            email: req.body.email,
+            email: order.user.email || req.body.email,
             amount: order.totalAmount * 100, // convert to pesewas
             currency: "GHS",
             metadata: {
@@ -64,59 +73,36 @@ const Order = require("../models/Order");
 exports.verifyPayment = async (req, res) => {
     try {
 
-        const { reference } = req.query;
+        verifyPaystackSignature(req);
 
-        if (!reference) {
+        const event = req.body.event;
+        const paymentData = req.body.data;
+
+        if (!paymentData || !paymentData.metadata) {
             return res.status(400).json({
                 success: false,
-                message: "No payment reference provided"
+                message: "Invalid webhook payload."
             });
         }
 
-        // Verify transaction with Paystack
-        const response = await axios.get(
-            `https://api.paystack.co/transaction/verify/${reference}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
-                }
-            }
-        );
-
-        const paymentData = response.data.data;
-
-        // Check payment status
-        if (paymentData.status !== "success") {
-            return res.status(400).json({
-                success: false,
-                message: "Payment not successful"
+        if (event !== "charge.success") {
+            return res.status(200).json({
+                success: true,
+                message: "Event ignored."
             });
         }
 
-        // Get order ID from metadata
         const orderId = paymentData.metadata.orderId;
-
         const order = await Order.findById(orderId);
 
-if (!order) {
-    return res.status(404).json({
-        success: false,
-        message: "Order not found"
-    });
-}
+        if (!order) {
+            console.error("Verify Payment Error: order not found", orderId);
+            return res.status(404).json({
+                success: false,
+                message: "Order not found"
+            });
+        }
 
-
-// Check order ownership
-if (order.user.toString() !== req.user.userId) {
-
-    return res.status(403).json({
-        success: false,
-        message: "You cannot pay for this order"
-    });
-
-}
-
-        // Prevent double updates
         if (order.paymentStatus === "Paid") {
             return res.status(200).json({
                 success: true,
@@ -125,10 +111,9 @@ if (order.user.toString() !== req.user.userId) {
             });
         }
 
-        // Update order
         order.paymentStatus = "Paid";
         order.status = "Processing";
-        order.paymentReference = reference;
+        order.paymentReference = paymentData.reference;
 
         await order.save();
 

@@ -12,7 +12,7 @@ exports.addToCart = async (req, res) => {
         const userId = req.user.userId;
 
         const { productId, quantity } = req.body;
-
+        const qty = Number(quantity) || 1;
 
         const product = await Product.findById(productId);
 
@@ -38,7 +38,7 @@ exports.addToCart = async (req, res) => {
                 items: [
                     {
                         product: productId,
-                        quantity: quantity || 1
+                        quantity: qty
                     }
                 ]
 
@@ -57,7 +57,7 @@ exports.addToCart = async (req, res) => {
 
             if (existingItem) {
 
-                existingItem.quantity += quantity || 1;
+                existingItem.quantity += qty;
 
             } else {
 
@@ -152,6 +152,12 @@ exports.removeFromCart = async(req,res)=>{
 
         });
 
+        if (!cart) {
+            return res.status(404).json({
+                success: false,
+                message: "Cart not found."
+            });
+        }
 
         cart.items = cart.items.filter(
 

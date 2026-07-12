@@ -21,11 +21,11 @@ router.post(
 
 
 // ===============================
-// VERIFY PAYMENT
-// Paystack callback
+// PAYSTACK WEBHOOK
+// Public webhook endpoint, signed by Paystack
 // ===============================
-router.get(
-    "/verify",
+router.post(
+    "/webhook",
     verifyPayment
 );
 

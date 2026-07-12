@@ -6,7 +6,8 @@ const auth = require("../middleware/sellerAuth");
 const {
     registerSeller,
     loginSeller,
-    getSellerProfile
+    getSellerProfile,
+    getSellerStats
 } = require("../controllers/sellerController");
 
 // ===============================
@@ -25,5 +26,8 @@ router.post("/login", loginSeller);
 
 // Get Logged-in Seller Profile
 router.get("/profile", auth, getSellerProfile);
+
+// Get seller dashboard stats
+router.get("/stats", auth, getSellerStats);
 
 module.exports = router;

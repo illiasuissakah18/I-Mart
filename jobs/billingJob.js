@@ -26,7 +26,7 @@ cron.schedule("0 0 * * *", async () => {
 
             if (today >= seller.nextBillingDate) {
 
-                seller.subscriptionStatus = "Inactive";
+                seller.status = "Suspended";
 
                 seller.billingStatus = "Unpaid";
 
