@@ -6,7 +6,7 @@ Version: 4.0
 ==========================================
 */
 
-const API_URL = "https://i-mart-backend.onrender.com";
+const API_URL = "";
 
 const form = document.getElementById("sellerLoginForm");
 
@@ -48,7 +48,7 @@ if (form) {
         try {
 
             const response = await fetch(
-                `${API_URL}/api/sellers/login`,
+                "/api/sellers/login",
                 {
 
                     method: "POST",

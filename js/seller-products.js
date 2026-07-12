@@ -6,7 +6,15 @@ Version 3.0
 ==========================================
 */
 
-const API = "https://i-mart-backend.onrender.com/api/products";
+const API_BASE = (function() {
+    if (window.location.protocol === "file:") {
+        return "http://localhost:5000/api";
+    }
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        return "http://localhost:5000/api";
+    }
+    return `${window.location.origin}/api`;
+})();
 
 const productsContainer = document.getElementById("productsContainer");
 
@@ -27,7 +35,7 @@ async function loadProducts() {
 
     try {
 
-        const response = await fetch(`${API}/seller/my-products`, {
+        const response = await fetch(`${API_BASE}/products/seller/my-products`, {
 
             headers: {
                 Authorization: `Bearer ${token}`
@@ -71,7 +79,7 @@ async function loadProducts() {
 
             <div class="product-card">
 
-                <img src="https://i-mart-backend.onrender.com${product.image}"
+                <img src="${API_BASE.replace('/api', '')}${product.image}"
                      alt="${product.name}">
 
                 <div class="product-info">
@@ -137,7 +145,7 @@ async function deleteProduct(id) {
 
     try {
 
-        const response = await fetch(`${API}/${id}`, {
+        const response = await fetch(`${API_BASE}/products/${id}`, {
 
             method: "DELETE",
 

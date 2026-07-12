@@ -1,6 +1,12 @@
-const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-    ? "http://localhost:5000/api"
-    : "https://i-mart-backend.onrender.com/api";
+const API_BASE = (function() {
+    if (window.location.protocol === "file:") {
+        return "http://localhost:5000/api";
+    }
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        return "http://localhost:5000/api";
+    }
+    return `${window.location.origin}/api`;
+})();
 
 const sellerNameEl = document.getElementById("seller-name");
 const shopNameEl = document.getElementById("shop-name");

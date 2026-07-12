@@ -27,7 +27,7 @@ form.addEventListener("submit", async (e) => {
 
     try {
 
-        const response = await fetch("https://i-mart-backend.onrender.com/api/sellers/register", {
+        const response = await fetch("/api/sellers/register", {
 
             method: "POST",
 

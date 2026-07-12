@@ -130,7 +130,7 @@ exports.updateOrderStatus = async (req, res) => {
             });
         }
 
-        order.orderStatus = req.body.orderStatus;
+        order.status = req.body.orderStatus;
 
         await order.save();
 

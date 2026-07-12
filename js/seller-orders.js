@@ -6,7 +6,15 @@ Version: 3.0
 ==========================================
 */
 
-const API = "https://i-mart-backend.onrender.com/api/products";
+const API_BASE = (function() {
+    if (window.location.protocol === "file:") {
+        return "http://localhost:5000/api";
+    }
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        return "http://localhost:5000/api";
+    }
+    return `${window.location.origin}/api`;
+})();
 
 const token = localStorage.getItem("sellerToken");
 
@@ -16,7 +24,7 @@ async function loadOrders() {
 
     try {
 
-        const res = await fetch(`${API}/api/orders/seller`, {
+        const res = await fetch(`${API_BASE}/orders/seller`, {
 
             headers: {
                 Authorization: `Bearer ${token}`
@@ -43,11 +51,15 @@ async function loadOrders() {
 
         data.orders.forEach(order => {
 
-            if (order.orderStatus === "Pending") pending++;
-            if (order.orderStatus === "Processing") processing++;
-            if (order.orderStatus === "Delivered") delivered++;
+            const orderStatus = order.status || order.orderStatus || "Pending";
+            if (orderStatus === "Pending") pending++;
+            if (orderStatus === "Processing") processing++;
+            if (orderStatus === "Delivered") delivered++;
 
-            const product = order.products[0];
+            const item = order.items?.[0] || {};
+            const product = item.product || {};
+            const customerName = order.user?.fullName || order.customer?.fullName || "Customer";
+            const quantity = item.quantity ?? 0;
 
             container.innerHTML += `
 
@@ -55,15 +67,15 @@ async function loadOrders() {
 
 <td>${order._id.slice(-6)}</td>
 
-<td>${order.customer.fullName}</td>
+<td>${customerName}</td>
 
-<td>${product.name}</td>
+<td>${product.name || "—"}</td>
 
-<td>${product.quantity}</td>
+<td>${quantity}</td>
 
-<td>GH₵${order.total}</td>
+<td>GH₵${order.totalAmount?.toFixed(2) ?? "0.00"}</td>
 
-<td>${order.orderStatus}</td>
+<td>${orderStatus}</td>
 
 <td>
 
@@ -108,7 +120,7 @@ async function markDelivered(id) {
 
     try {
 
-        const res = await fetch(`${API}/api/orders/${id}`, {
+        const res = await fetch(`${API_BASE}/orders/${id}`, {
 
             method: "PUT",
 
