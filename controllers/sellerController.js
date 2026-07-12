@@ -9,6 +9,9 @@ Version 6.0
 const Seller = require("../models/Seller");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Product = require("../models/Product");
+const Order = require("../models/Order");
+const mongoose = require("mongoose");
 
 // ===============================
 // GENERATE JWT TOKEN
@@ -191,4 +194,54 @@ exports.getSellerProfile = async (req, res) => {
 
     }
 
+};
+
+// ===============================
+// GET SELLER STATS
+// ===============================
+exports.getSellerStats = async (req, res) => {
+    try {
+        const sellerId = req.seller.sellerId;
+
+        // Count products
+        const productsCount = await Product.countDocuments({ seller: sellerId });
+
+        // Find orders that include items from this seller
+        const orders = await Order.find({ 'items.seller': sellerId });
+
+        const ordersCount = orders.length;
+
+        // Calculate revenue and pending orders for this seller
+        let totalRevenue = 0;
+        let pendingOrders = 0;
+
+        orders.forEach(order => {
+            let hasSellerItem = false;
+
+            order.items.forEach(item => {
+                if (item.seller && item.seller.toString() === sellerId.toString()) {
+                    hasSellerItem = true;
+                    totalRevenue += (item.price || 0) * (item.quantity || 0);
+                }
+            });
+
+            if (hasSellerItem && order.status === "Pending") {
+                pendingOrders += 1;
+            }
+        });
+
+        return res.json({
+            success: true,
+            stats: {
+                productsCount,
+                ordersCount,
+                totalRevenue,
+                pendingOrders
+            }
+        });
+
+    } catch (error) {
+        console.error("Get Seller Stats Error:", error);
+        return res.status(500).json({ success: false, message: "Server Error." });
+    }
 };

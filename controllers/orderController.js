@@ -15,7 +15,23 @@ exports.createOrder = async (req, res) => {
 
     try {
 
-        const order = await Order.create(req.body);
+        const userId = req.user.userId;
+        const { items, totalAmount, paymentStatus = "Pending", status = "Pending" } = req.body;
+
+        if (!Array.isArray(items) || items.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Order must contain at least one item."
+            });
+        }
+
+        const order = await Order.create({
+            user: userId,
+            items,
+            totalAmount,
+            paymentStatus,
+            status
+        });
 
         res.status(201).json({
 
@@ -51,13 +67,16 @@ exports.getSellerOrders = async (req, res) => {
 
         const orders = await Order.find({
 
-            "products.seller": sellerId
+            "items.seller": sellerId
 
-        }).sort({
+        })
+            .populate("user", "fullName")
+            .populate("items.product", "name")
+            .sort({
 
-            createdAt: -1
+                createdAt: -1
 
-        });
+            });
 
         res.status(200).json({
 
@@ -100,6 +119,15 @@ exports.updateOrderStatus = async (req, res) => {
 
             });
 
+        }
+
+        const orderSeller = order.items.find(item => item.seller?.toString() === req.seller.sellerId);
+
+        if (!orderSeller) {
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized to update this order."
+            });
         }
 
         order.orderStatus = req.body.orderStatus;

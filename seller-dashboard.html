@@ -61,22 +61,39 @@ Manage your store, products and orders from one dashboard.
 
 
 <div class="dashboard-card">
+  <div>
+    <strong>Shop:</strong>
+    <span id="shop-name">Loading...</span>
+  </div>
 
-<p>
-<strong>Shop:</strong>
-<span id="shop-name">Loading...</span>
-</p>
-
-
-<p>
-<strong>Email:</strong>
-<span id="seller-email">Loading...</span>
-</p>
-
-
+  <div>
+    <strong>Email:</strong>
+    <span id="seller-email">Loading...</span>
+  </div>
 </div>
 
+<!-- Seller Stats -->
+<div class="dashboard-stats">
+  <div class="stat-card">
+    <div class="stat-value" id="stat-products">--</div>
+    <div class="stat-label">Products</div>
+  </div>
 
+  <div class="stat-card">
+    <div class="stat-value" id="stat-orders">--</div>
+    <div class="stat-label">Orders</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-value" id="stat-revenue">--</div>
+    <div class="stat-label">Revenue (GHS)</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-value" id="stat-pending">--</div>
+    <div class="stat-label">Pending Orders</div>
+  </div>
+</div>
 
 
 <div class="dashboard-actions">
@@ -104,6 +121,29 @@ Manage your store, products and orders from one dashboard.
 
 </div>
 
+
+<!-- Recent Products and Orders -->
+<div class="dashboard-lists">
+  <div class="list-card list-card--wide">
+    <div class="list-card__header">
+      <strong>Recent Products</strong>
+      <a href="seller-products.html">View all</a>
+    </div>
+    <div id="recent-products">
+      <p>Loading products...</p>
+    </div>
+  </div>
+
+  <div class="list-card list-card--wide">
+    <div class="list-card__header">
+      <strong>Recent Orders</strong>
+      <a href="seller-orders.html">View all</a>
+    </div>
+    <div id="recent-orders">
+      <p>Loading orders...</p>
+    </div>
+  </div>
+</div>
 
 
 </section>
