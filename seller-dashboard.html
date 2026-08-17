@@ -1,192 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Seller Dashboard | I MART</title>
-
+<title>I MART Seller Center</title>
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/seller.css">
-
+<link rel="stylesheet" href="css/seller-center.css">
 </head>
-
-
-<body>
-
-
-<header class="header">
-
-<div class="logo">
-<a href="index.html">
-<img src="images/logo.png" alt="I MART Logo">
-</a>
-</div>
-
-
-<nav>
-
-<a href="index.html">Home</a>
-
-<a href="products.html">Marketplace</a>
-
-<a href="seller-products.html">My Products</a>
-
-<a href="seller-orders.html">Orders</a>
-
-<a href="#" onclick="logoutSeller()">Logout</a>
-
-</nav>
-
-
+<body class="seller-center-body">
+<div class="seller-center-shell">
+<aside class="sc-sidebar" id="sc-sidebar">
+  <div class="sc-brand"><img src="images/logo.png" alt="I MART"><span>I MART<br><small style="font-size:11px;color:#9ca3af">Seller Center</small></span></div>
+  <nav class="sc-nav" aria-label="Seller Center navigation">
+    <button data-section="overview">🏠 <span>Overview</span></button>
+    <button data-section="products">📦 <span>Products</span></button>
+    <button data-section="add">➕ <span>Add Product</span></button>
+    <button data-section="orders">🛒 <span>Orders</span></button>
+    <button data-section="wallet">💰 <span>Wallet</span></button>
+    <button data-section="analytics">📊 <span>Analytics</span></button>
+    <button data-section="store">🏪 <span>My Store</span></button>
+    <button data-section="resellers">🤝 <span>Resellers</span></button>
+    <button data-section="subscription">💳 <span>Subscription</span></button>
+    <button data-section="settings">⚙️ <span>Settings</span></button>
+  </nav>
+  <button class="sc-logout" id="sc-logout">🚪 <span>Logout</span></button>
+</aside>
+<div class="sc-overlay" id="sc-overlay"></div>
+<main class="sc-main">
+<header class="sc-topbar">
+  <div class="sc-topbar-actions"><button class="sc-mobile-toggle" id="sc-mobile-toggle" aria-label="Open menu">☰</button><div class="sc-topbar-title" id="sc-topbar-title">Overview</div></div>
+  <div class="sc-topbar-actions"><span id="topbar-shop" class="sc-muted">Seller</span><div class="sc-avatar" id="avatar">S</div></div>
 </header>
-
-
-
-
-<section class="seller-dashboard">
-
-
-<h1>
-Welcome, <span id="seller-name">Seller</span>
-</h1>
-
-
-<p>
-Manage your store, products and orders from one dashboard.
-</p>
-
-
-
-<div class="dashboard-card">
-  <div>
-    <strong>Shop:</strong>
-    <span id="shop-name">Loading...</span>
+<div class="sc-content">
+<section class="sc-section" id="section-overview">
+  <div class="sc-page-head"><div><h1>Seller Overview</h1><p>Manage your I MART shop, products, sales and customers.</p></div><a class="sc-btn primary" href="products.html">View Marketplace</a></div>
+  <div class="sc-card sc-profile-card"><div class="sc-profile-main"><h2>Welcome, <span id="seller-name">Seller</span> 👋</h2><p>Shop: <strong id="shop-name">—</strong></p><p>Email: <span id="seller-email">—</span> · Phone: <span id="seller-phone">—</span></p></div><div class="sc-badges"><span class="sc-badge success" id="account-badge">Active</span><span class="sc-badge" id="subscription-badge">Subscription</span></div></div>
+  <div class="sc-stats">
+    <div class="sc-card sc-stat"><div class="sc-stat-icon">📦</div><div class="sc-stat-value" id="stat-products">—</div><div class="sc-stat-label">Total Products</div></div>
+    <div class="sc-card sc-stat"><div class="sc-stat-icon">🛒</div><div class="sc-stat-value" id="stat-orders">—</div><div class="sc-stat-label">Total Orders</div></div>
+    <div class="sc-card sc-stat"><div class="sc-stat-icon">💰</div><div class="sc-stat-value" id="stat-revenue">—</div><div class="sc-stat-label">Total Revenue</div></div>
+    <div class="sc-card sc-stat"><div class="sc-stat-icon">⏳</div><div class="sc-stat-value" id="stat-pending">—</div><div class="sc-stat-label">Pending Orders</div></div>
+    <div class="sc-card sc-stat"><div class="sc-stat-icon">✅</div><div class="sc-stat-value" id="stat-completed">—</div><div class="sc-stat-label">Completed Orders</div></div>
+    <div class="sc-card sc-stat"><div class="sc-stat-icon">⚠️</div><div class="sc-stat-value" id="stat-out">—</div><div class="sc-stat-label">Out of Stock</div></div>
   </div>
-
-  <div>
-    <strong>Email:</strong>
-    <span id="seller-email">Loading...</span>
+  <div id="overview-error" class="sc-muted" style="margin-bottom:18px"></div>
+  <div class="sc-grid-2">
+    <div class="sc-card"><div class="sc-card-head"><h3>Recent Products</h3><button class="sc-btn secondary" data-section="products" onclick="location.hash='products';document.querySelector('[data-section=products]').click()">View all</button></div><div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Product</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody id="recent-products-body"></tbody></table></div></div>
+    <div class="sc-card"><div class="sc-card-head"><h3>Recent Orders</h3><button class="sc-btn secondary" onclick="document.querySelector('[data-section=orders]').click()">View all</button></div><div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Order</th><th>Customer</th><th>Product</th><th>Amount</th><th>Status</th></tr></thead><tbody id="recent-orders-body"></tbody></table></div></div>
   </div>
-</div>
-
-<!-- Seller Stats -->
-<div class="dashboard-stats">
-  <div class="stat-card">
-    <div class="stat-value" id="stat-products">--</div>
-    <div class="stat-label">Products</div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-value" id="stat-orders">--</div>
-    <div class="stat-label">Orders</div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-value" id="stat-revenue">--</div>
-    <div class="stat-label">Revenue (GHS)</div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-value" id="stat-pending">--</div>
-    <div class="stat-label">Pending Orders</div>
-  </div>
-</div>
-
-
-<div class="dashboard-actions">
-
-
-<a href="seller-products.html" class="btn">
-📦 Manage Products
-</a>
-
-
-<a href="seller-orders.html" class="btn">
-🛒 View Orders
-</a>
-
-
-<a href="add-product.html" class="btn">
-➕ Add Product
-</a>
-
-
-<a href="#" onclick="logoutSeller()" class="btn">
-🚪 Logout
-</a>
-
-
-</div>
-
-
-<!-- Recent Products and Orders -->
-<div class="dashboard-lists">
-  <div class="list-card list-card--wide">
-    <div class="list-card__header">
-      <strong>Recent Products</strong>
-      <a href="seller-products.html">View all</a>
-    </div>
-    <div id="recent-products">
-      <p>Loading products...</p>
-    </div>
-  </div>
-
-  <div class="list-card list-card--wide">
-    <div class="list-card__header">
-      <strong>Recent Orders</strong>
-      <a href="seller-orders.html">View all</a>
-    </div>
-    <div id="recent-orders">
-      <p>Loading orders...</p>
-    </div>
-  </div>
-</div>
-
-
 </section>
-
-
-
-
-
-<footer class="footer">
-
-<p>
-© 2026 I MART Marketplace. All rights reserved.
-</p>
-
-</footer>
-
-
-
-
-
+<section class="sc-section" id="section-products">
+  <div class="sc-page-head"><div><h1>Products</h1><p>Search, filter, edit and manage your catalogue.</p></div><button class="sc-btn primary" onclick="document.querySelector('[data-section=add]').click()">+ Add Product</button></div>
+  <div class="sc-card"><div class="sc-toolbar"><input id="product-search" class="sc-input" placeholder="Search products..."><select id="product-filter" class="sc-select"><option value="all">All status</option><option value="Active">Active</option><option value="Hidden">Hidden</option><option value="out">Out of Stock</option></select><select id="product-sort" class="sc-select"><option value="newest">Newest</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="stock">Lowest Stock</option></select></div><div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Product</th><th>Price</th><th>Stock</th><th>Status</th><th>Sales</th><th>Created</th><th>Actions</th></tr></thead><tbody id="products-body"><tr><td colspan="7" class="sc-loading">Loading products…</td></tr></tbody></table></div></div>
+</section>
+<section class="sc-section" id="section-add">
+  <div class="sc-page-head"><div><h1>Add Product</h1><p>Add a new item using the existing I MART product API.</p></div></div>
+  <div class="sc-card"><form id="add-product-form" class="sc-form" enctype="multipart/form-data">
+    <div class="sc-field"><label for="product-name">Product name</label><input id="product-name" name="name" class="sc-input" required maxlength="120"></div>
+    <div class="sc-field"><label for="product-category">Category</label><input id="product-category" name="category" class="sc-input" required maxlength="80" placeholder="Fashion, Shoes, Accessories…"></div>
+    <div class="sc-field"><label for="product-price">Price (GHS)</label><input id="product-price" name="price" type="number" min="0" step="0.01" class="sc-input" required></div>
+    <div class="sc-field"><label for="product-stock">Stock</label><input id="product-stock" name="stock" type="number" min="0" step="1" class="sc-input" required></div>
+    <div class="sc-field full"><label for="product-description">Description</label><textarea id="product-description" name="description" class="sc-textarea" rows="5" required maxlength="2000"></textarea></div>
+    <div class="sc-field full"><label>Product image</label><div class="sc-upload"><input id="image-input" name="image" type="file" accept="image/*" required><p class="sc-muted">Choose a clear product photo. The existing backend handles the upload.</p><img id="image-preview" class="sc-preview" alt="Image preview"></div></div>
+    <div class="sc-form-actions"><button type="button" class="sc-btn secondary" onclick="document.querySelector('[data-section=overview]').click()">Cancel</button><button type="submit" id="add-product-submit" class="sc-btn primary">Add Product</button></div>
+  </form></div>
+</section>
+<section class="sc-section" id="section-orders">
+  <div class="sc-page-head"><div><h1>Orders</h1><p>Track customer orders and update fulfilment status.</p></div></div>
+  <div class="sc-card"><div class="sc-toolbar"><input id="order-search" class="sc-input" placeholder="Search order, customer or product…"><select id="order-filter" class="sc-select"><option value="all">All statuses</option><option>Pending</option><option>Processing</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option></select></div><div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Products</th><th>Qty</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th></tr></thead><tbody id="orders-body"><tr><td colspan="8" class="sc-loading">Loading orders…</td></tr></tbody></table></div></div>
+</section>
+<section class="sc-section" id="section-wallet">
+  <div class="sc-page-head"><div><h1>Wallet</h1><p>Sales-based earnings view from your existing orders.</p></div></div>
+  <div class="sc-grid-3"><div class="sc-card"><div class="sc-stat-label">Total revenue</div><div class="sc-stat-value" id="wallet-revenue">GH₵0.00</div></div><div class="sc-card"><div class="sc-stat-label">Available earnings</div><div class="sc-stat-value" id="wallet-available">GH₵0.00</div></div><div class="sc-card"><div class="sc-stat-label">Pending earnings</div><div class="sc-stat-value" id="wallet-pending">GH₵0.00</div></div></div>
+  <div class="sc-grid-2" style="margin-top:18px"><div class="sc-card"><div class="sc-card-head"><h3>Wallet summary</h3></div><div class="sc-kpi-list"><div class="sc-kpi-row"><span>Completed sales</span><strong id="wallet-sales">0</strong></div><div class="sc-kpi-row"><span>Subscription payment</span><strong id="wallet-fee">GH₵0.00</strong></div><div class="sc-kpi-row"><span>Withdrawals</span><strong>Coming Soon</strong></div></div><div class="sc-notice soon" style="margin-top:14px">I MART does not currently expose a seller withdrawal/payout API, so no fake withdrawal action is shown.</div></div><div class="sc-card"><div class="sc-card-head"><h3>Transaction history</h3></div><div class="sc-table-wrap"><table class="sc-table"><thead><tr><th>Reference</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="transactions-body"></tbody></table></div></div></div>
+</section>
+<section class="sc-section" id="section-analytics">
+  <div class="sc-page-head"><div><h1>Analytics</h1><p>Real product and order data from your seller account.</p></div></div>
+  <div class="sc-grid-3"><div class="sc-card"><div class="sc-stat-label">Products</div><div class="sc-stat-value" id="analytics-products">0</div></div><div class="sc-card"><div class="sc-stat-label">Orders</div><div class="sc-stat-value" id="analytics-orders">0</div></div><div class="sc-card"><div class="sc-stat-label">Revenue</div><div class="sc-stat-value" id="analytics-revenue">GH₵0.00</div></div><div class="sc-card"><div class="sc-stat-label">Pending orders</div><div class="sc-stat-value" id="analytics-pending">0</div></div><div class="sc-card"><div class="sc-stat-label">Completed orders</div><div class="sc-stat-value" id="analytics-completed">0</div></div></div>
+  <div class="sc-grid-2" style="margin-top:18px"><div class="sc-card"><div class="sc-card-head"><h3>Best-selling products</h3></div><div id="best-products" class="sc-kpi-list"></div></div><div class="sc-card"><div class="sc-card-head"><h3>Low-stock products</h3></div><div id="low-products" class="sc-kpi-list"></div></div></div>
+</section>
+<section class="sc-section" id="section-store">
+  <div class="sc-page-head"><div><h1>My Store</h1><p>Manage your seller identity and catalogue preview.</p></div></div>
+  <div class="sc-grid-2"><div class="sc-card"><h3 id="store-name">—</h3><p class="sc-muted">Seller: <span id="store-seller">—</span></p><p class="sc-muted">Email: <span id="store-email">—</span></p><p>Shop status: <strong id="store-status">—</strong></p><p>Products: <strong id="store-count">0</strong></p><div class="sc-notice soon"><strong>Customer storefront:</strong> <span id="store-link">Coming soon</span><br>The current backend has no dedicated seller storefront route. The seller structure is ready for a future public store URL.</div></div><div class="sc-card"><div class="sc-card-head"><h3>Store products</h3></div><div id="store-products" class="sc-kpi-list"></div></div></div>
+</section>
+<section class="sc-section" id="section-resellers">
+  <div class="sc-page-head"><div><h1>Resellers</h1><p>Prepare your catalogue for a future reseller program.</p></div></div>
+  <div class="sc-card"><div class="sc-notice soon"><strong>Coming Soon.</strong> Reseller participation, margins, reseller orders and commission tracking are not implemented in the current backend. No fake enable/disable controls or commission balances are shown.</div><div class="sc-grid-3" style="margin-top:18px"><div class="sc-card"><strong>Reseller program</strong><p class="sc-muted">Coming Soon</p></div><div class="sc-card"><strong>Product reseller margin</strong><p class="sc-muted">Coming Soon</p></div><div class="sc-card"><strong>Reseller orders & commissions</strong><p class="sc-muted">Coming Soon</p></div></div><p class="sc-muted" style="margin-top:18px">Future backend work would require reseller, commission and reseller-order models plus protected seller/reseller routes.</p></div>
+</section>
+<section class="sc-section" id="section-subscription">
+  <div class="sc-page-head"><div><h1>Subscription</h1><p>Connected to the existing I MART seller subscription and Paystack flow.</p></div></div>
+  <div class="sc-grid-2"><div class="sc-card"><h2 id="sub-plan">Basic</h2><div class="sc-kpi-list"><div class="sc-kpi-row"><span>Monthly fee</span><strong id="sub-fee">GH₵0.00</strong></div><div class="sc-kpi-row"><span>Account status</span><strong id="sub-status">—</strong></div><div class="sc-kpi-row"><span>Billing status</span><strong id="sub-billing">—</strong></div><div class="sc-kpi-row"><span>Next billing date</span><strong id="sub-next">—</strong></div><div class="sc-kpi-row"><span>Last payment</span><strong id="sub-last">—</strong></div></div><button id="renew-subscription" class="sc-btn primary" style="margin-top:18px">Renew / Manage Subscription</button></div><div class="sc-card"><h3>How billing works</h3><p class="sc-muted">The dashboard reads subscription fields from the authenticated seller profile. Renewal uses the existing <code>/api/subscription/initialize</code> endpoint and Paystack redirect.</p><div class="sc-notice">Paystack secret keys remain on the backend and are never included in this frontend.</div><a href="subscription.html" class="sc-btn secondary" style="margin-top:15px">Open Subscription Page</a></div></div>
+</section>
+<section class="sc-section" id="section-settings">
+  <div class="sc-page-head"><div><h1>Settings</h1><p>Update the seller profile used by your I MART shop.</p></div></div>
+  <div class="sc-card"><div class="sc-form"><div class="sc-field"><label>Full name</label><input id="settings-fullname" class="sc-input"></div><div class="sc-field"><label>Shop name</label><input id="settings-shopname" class="sc-input"></div><div class="sc-field"><label>Email</label><input id="settings-email" type="email" class="sc-input"></div><div class="sc-field"><label>Phone</label><input id="settings-phone" class="sc-input"></div><div class="sc-field full"><label>Seller account</label><div class="sc-notice">JWT authentication remains enabled. Passwords are never loaded into this page. Account status: <strong id="seller-status">—</strong></div></div><div class="sc-form-actions"><button id="save-settings" class="sc-btn primary">Save Settings</button></div></div></div>
+</section>
+</div>
+<footer class="sc-footer">© 2026 I MART Marketplace · Seller Center</footer>
+</main>
+</div>
+<div class="sc-toast" id="sc-toast"></div>
 <script src="js/seller-auth.js"></script>
-
-<script src="js/seller-dashboard.js"></script>
-
-
+<script src="js/seller-center.js"></script>
 <script>
-
-
-function logoutSeller(){
-
-localStorage.removeItem("sellerToken");
-
-localStorage.removeItem("currentSeller");
-
-window.location.href="seller-login.html";
-
-}
-
-
+/* Render small overview tables after seller-center data is available without duplicating its API configuration. */
+const overviewObserver = new MutationObserver(() => {
+  if (!window.__imartOverviewBound && document.getElementById('stat-products')?.textContent !== '—') {
+    window.__imartOverviewBound = true;
+    const navProducts=document.querySelector('[data-section="products"]');
+    const originalRender=document.getElementById('products-body');
+    const sellerData=JSON.parse(localStorage.getItem('currentSeller')||'{}');
+    document.getElementById('topbar-shop').textContent=sellerData.shopName||'Seller';
+    /* The detailed product/order tables remain the source of truth; the overview links are kept intentionally simple. */
+  }
+});
+overviewObserver.observe(document.body,{subtree:true,childList:true,characterData:true});
 </script>
-
-
-
 </body>
-
 </html>
