@@ -2,27 +2,34 @@
 ==========================================
 I MART Marketplace
 Seller Authentication System
-MongoDB + JWT Version 2.0
+MongoDB + JWT Version 3.0
 ==========================================
 */
 
+// Keep the frontend on GitHub Pages while sending seller API requests
+// to the existing production Render backend.
 const API_HOST = (function() {
     if (window.location.protocol === "file:") {
         return "http://localhost:5000";
     }
-    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+
+    if (
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1"
+    ) {
         return "http://localhost:5000";
     }
-    return window.location.origin || "https://i-mart-backend.onrender.com";
+
+    return "https://i-mart-backend.onrender.com";
 })();
-const API_URL = "/api/sellers";
+
+const API_URL = `${API_HOST}/api/sellers`;
 
 /* ==========================
    REGISTER SELLER
 ========================== */
 
 async function registerSeller() {
-
     const fullName = document.getElementById("fullName").value.trim();
     const shopName = document.getElementById("shopName").value.trim();
     const email = document.getElementById("sellerEmail").value.trim().toLowerCase();
@@ -30,14 +37,7 @@ async function registerSeller() {
     const password = document.getElementById("sellerPassword").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
 
-    if (
-        !fullName ||
-        !shopName ||
-        !email ||
-        !phone ||
-        !password ||
-        !confirmPassword
-    ) {
+    if (!fullName || !shopName || !email || !phone || !password || !confirmPassword) {
         alert("Please fill in all fields.");
         return;
     }
@@ -48,49 +48,24 @@ async function registerSeller() {
     }
 
     try {
-
         const response = await fetch(`${API_URL}/register`, {
-
             method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                fullName,
-                shopName,
-                email,
-                phone,
-                password
-
-            })
-
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fullName, shopName, email, phone, password })
         });
 
         const data = await response.json();
 
         if (data.success) {
-
             alert("Registration successful. Please login.");
-
             window.location.href = "seller-login.html";
-
         } else {
-
-            alert(data.message);
-
+            alert(data.message || "Unable to register seller.");
         }
-
     } catch (error) {
-
-        console.error(error);
-
-        alert("Unable to register seller.");
-
+        console.error("Seller registration error:", error);
+        alert("Unable to connect to the seller server. Please try again.");
     }
-
 }
 
 /* ==========================
@@ -98,74 +73,53 @@ async function registerSeller() {
 ========================== */
 
 async function loginSeller() {
-
     const email = document.getElementById("sellerEmail").value.trim().toLowerCase();
     const password = document.getElementById("sellerPassword").value;
 
+    if (!email || !password) {
+        alert("Please enter your email and password.");
+        return;
+    }
+
     try {
-
         const response = await fetch(`${API_URL}/login`, {
-
             method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-
-                email,
-                password
-
-            })
-
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
         });
 
         const data = await response.json();
 
-        if (!data.success) {
-
-            alert(data.message);
-
+        if (!response.ok || !data.success) {
+            alert(data.message || "Invalid seller login details.");
             return;
-
         }
 
-        // Save login information
         localStorage.setItem("sellerToken", data.token);
-
-        localStorage.setItem(
-            "currentSeller",
-            JSON.stringify(data.seller)
-        );
+        localStorage.setItem("currentSeller", JSON.stringify(data.seller));
 
         alert("Login successful.");
-
         window.location.href = "seller-dashboard.html";
-
     } catch (error) {
-
-        console.error(error);
-
-        alert("Unable to login.");
-
+        console.error("Seller login error:", error);
+        alert("Unable to connect to the seller server. Please check your internet connection and try again.");
     }
-
 }
+
 /* ==========================
    GET CURRENT SELLER
 ========================== */
 
 function getCurrentSeller() {
-
     const seller = localStorage.getItem("currentSeller");
+    if (!seller) return null;
 
-    if (!seller) {
+    try {
+        return JSON.parse(seller);
+    } catch (error) {
+        localStorage.removeItem("currentSeller");
         return null;
     }
-
-    return JSON.parse(seller);
-
 }
 
 /* ==========================
@@ -173,9 +127,7 @@ function getCurrentSeller() {
 ========================== */
 
 function getSellerToken() {
-
     return localStorage.getItem("sellerToken");
-
 }
 
 /* ==========================
@@ -183,9 +135,7 @@ function getSellerToken() {
 ========================== */
 
 function isSellerLoggedIn() {
-
     return !!getSellerToken();
-
 }
 
 /* ==========================
@@ -193,12 +143,9 @@ function isSellerLoggedIn() {
 ========================== */
 
 function sellerLogout() {
-
     localStorage.removeItem("sellerToken");
     localStorage.removeItem("currentSeller");
-
     window.location.href = "seller-login.html";
-
 }
 
 /* ==========================
@@ -206,14 +153,12 @@ function sellerLogout() {
 ========================== */
 
 function protectSellerDashboard() {
-
     if (!isSellerLoggedIn()) {
-
         window.location.href = "seller-login.html";
-        return;
-
+        return false;
     }
 
+    return true;
 }
 
 /* ==========================
@@ -221,27 +166,16 @@ function protectSellerDashboard() {
 ========================== */
 
 function loadSellerProfile() {
-
     const seller = getCurrentSeller();
-
     if (!seller) return;
 
     const sellerName = document.getElementById("sellerName");
     const shopName = document.getElementById("shopName");
     const sellerEmail = document.getElementById("sellerEmail");
 
-    if (sellerName) {
-        sellerName.textContent = `Welcome ${seller.fullName}`;
-    }
-
-    if (shopName) {
-        shopName.textContent = seller.shopName;
-    }
-
-    if (sellerEmail) {
-        sellerEmail.textContent = seller.email;
-    }
-
+    if (sellerName) sellerName.textContent = `Welcome ${seller.fullName || "Seller"}`;
+    if (shopName) shopName.textContent = seller.shopName || "";
+    if (sellerEmail) sellerEmail.textContent = seller.email || "";
 }
 
 /* ==========================
@@ -249,26 +183,19 @@ function loadSellerProfile() {
 ========================== */
 
 function getAuthHeaders() {
-
     return {
-
         "Content-Type": "application/json",
-
         "Authorization": `Bearer ${getSellerToken()}`
-
     };
-
 }
+
 /* ==========================
    LOAD DASHBOARD
 ========================== */
 
 function loadDashboard() {
-
-    protectSellerDashboard();
-
+    if (!protectSellerDashboard()) return;
     loadSellerProfile();
-
 }
 
 /* ==========================
@@ -278,15 +205,10 @@ function loadDashboard() {
 const registerForm = document.getElementById("sellerRegisterForm");
 
 if (registerForm) {
-
-    registerForm.addEventListener("submit", function (e) {
-
+    registerForm.addEventListener("submit", function(e) {
         e.preventDefault();
-
         registerSeller();
-
     });
-
 }
 
 /* ==========================
@@ -296,15 +218,10 @@ if (registerForm) {
 const loginForm = document.getElementById("sellerLoginForm");
 
 if (loginForm) {
-
-    loginForm.addEventListener("submit", function (e) {
-
+    loginForm.addEventListener("submit", function(e) {
         e.preventDefault();
-
         loginSeller();
-
     });
-
 }
 
 /* ==========================
@@ -312,11 +229,7 @@ if (loginForm) {
 ========================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-
     if (window.location.pathname.includes("seller-dashboard")) {
-
         loadDashboard();
-
     }
-
 });
